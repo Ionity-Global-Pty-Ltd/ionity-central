@@ -1,7 +1,7 @@
 {
-  "name": "Ionity Central - Unified Workspace, CRM & Scrum",
+  "name": "Ionity Central - Google AI Edge & Enterprise Workspace",
   "short_name": "Ionity Central",
-  "description": "Global enterprise workspace combining Unity docs, CRM pipeline, SCRUM sprint management, and Google OAuth 2.0.",
+  "description": "On-Device Google AI Edge Gallery, Gemma 4, Thinking Mode, Unity docs, CRM pipeline, SCRUM sprints, and Google OAuth 2.0.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1A1A1A",
@@ -24,20 +24,35 @@
   ],
   "shortcuts": [
     {
-      "name": "New Document",
-      "url": "./index.html?view=workspace&action=new",
-      "description": "Create a new Unity document"
+      "name": "Google AI Edge Gallery",
+      "url": "./index.html?view=ai-edge",
+      "description": "Launch on-device Gemma 4 & LiteRT-LM suite"
     },
     {
-      "name": "CRM Pipeline",
+      "name": "AI Chat & Thinking Mode",
+      "url": "./index.html?view=ai-edge&tab=chat",
+      "description": "Engage in step-by-step on-device reasoning"
+    },
+    {
+      "name": "Ask Image (Vision Studio)",
+      "url": "./index.html?view=ai-edge&tab=vision",
+      "description": "Mobile camera capture and visual question answering"
+    },
+    {
+      "name": "Audio Scribe (Voice)",
+      "url": "./index.html?view=ai-edge&tab=audio",
+      "description": "Live speech-to-text recording and transcription"
+    },
+    {
+      "name": "Unity Workspace Docs",
+      "url": "./index.html?view=workspace",
+      "description": "Access enterprise documents and knowledge base"
+    },
+    {
+      "name": "CRM Sales Pipeline",
       "url": "./index.html?view=crm",
-      "description": "View CRM deals and contacts"
-    },
-    {
-      "name": "Sprint Board",
-      "url": "./index.html?view=scrum",
-      "description": "View active SCRUM sprint board"
+      "description": "View CRM deals and financial forecast"
     }
   ],
-  "categories": ["productivity", "business", "utilities"]
+  "categories": ["productivity", "business", "utilities", "developer tools"]
 }

@@ -20,6 +20,7 @@ class App {
     FirebaseManager.init();
     LocalRAGService.init();
     GeminiService.init();
+    AIEdgeGallery.init();
     WorkspaceManager.init();
     CRMManager.init();
     ScrumManager.init();
@@ -96,8 +97,17 @@ class App {
     if (targetSection) targetSection.classList.add('active');
     if (targetNav) targetNav.classList.add('active');
 
+    // Update Mobile Dock Active State
+    document.querySelectorAll('.mobile-dock-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (viewName === 'workspace' && btn.textContent.trim() === 'Docs') btn.classList.add('active');
+      if (viewName === 'crm' && btn.textContent.trim() === 'CRM') btn.classList.add('active');
+      if (viewName === 'ai-edge' && btn.getAttribute('data-edge-tab') === AIEdgeGallery.currentTab) btn.classList.add('active');
+    });
+
     const viewTitles = {
       workspace: 'Unity Workspace Docs',
+      'ai-edge': 'Google AI Edge Gallery • Gemma 4 & On-Device Engine',
       crm: 'CRM Pipeline & Financial Forecast',
       scrum: 'SCRUM Sprint & Burndown Trajectory',
       recorder: 'Screen Recorder Studio & Capture Engine',
@@ -185,7 +195,14 @@ class App {
       { category: 'Profiles & Identity', icon: renderIcon('userAdd', '', 16), title: 'Create New Team / Client Profile', action: () => ProfilesManager.openCreateProfileModal() },
       { category: 'Cloud & Auth', icon: renderIcon('google', '', 16), title: 'Continue with Google OAuth 2.0 (@ionity.today Domain Lock)', action: () => AuthManager.loginWithGoogle() },
       { category: 'Cloud & Auth', icon: renderIcon('auth', '', 16), title: 'Configure Google OAuth 2.0 Web Client ID', action: () => this.openModal('modal-google-auth') },
+      { category: 'Google AI Edge Core', icon: renderIcon('aiBlock', '', 16), title: 'Open Google AI Edge Gallery Hub', action: () => { this.switchView('ai-edge'); AIEdgeGallery.switchTab('hub'); } },
+      { category: 'Google AI Edge Core', icon: renderIcon('aiBlock', '', 16), title: 'Gemma 4 AI Chat with Thinking Mode', action: () => { this.switchView('ai-edge'); AIEdgeGallery.switchTab('chat'); } },
+      { category: 'Google AI Edge Core', icon: renderIcon('crop', '', 16), title: 'Ask Image & Mobile Camera Vision Studio', action: () => { this.switchView('ai-edge'); AIEdgeGallery.switchTab('vision'); } },
+      { category: 'Google AI Edge Core', icon: renderIcon('soundboardBlock', '', 16), title: 'Audio Scribe & Live Voice Transcription', action: () => { this.switchView('ai-edge'); AIEdgeGallery.switchTab('audio'); } },
+      { category: 'Google AI Edge Core', icon: renderIcon('badge', '', 16), title: 'Prompt Lab & Agent Skills (MCP Tools)', action: () => { this.switchView('ai-edge'); AIEdgeGallery.switchTab('lab'); } },
+      { category: 'Google AI Edge Core', icon: renderIcon('upload', '', 16), title: 'Load Custom Model Checkpoint (BYOM)', action: () => { this.switchView('ai-edge'); AIEdgeGallery.switchTab('models'); } },
       { category: 'Navigation', icon: renderIcon('workspace', '', 16), title: 'Go to Unity Workspace Docs', action: () => this.switchView('workspace') },
+      { category: 'Navigation', icon: renderIcon('aiBlock', '', 16), title: 'Go to Google AI Edge Gallery', action: () => this.switchView('ai-edge') },
       { category: 'Navigation', icon: renderIcon('crm', '', 16), title: 'Go to CRM Pipeline & Forecast (Check-in ➔ Paid)', action: () => this.switchView('crm') },
       { category: 'Navigation', icon: renderIcon('scrum', '', 16), title: 'Go to SCRUM Sprint & Burndown Chart (Busy With ➔ Completed)', action: () => this.switchView('scrum') },
       { category: 'Navigation', icon: renderIcon('gcp', '', 16), title: 'Open Google Cloud VM Setup & Terminal', action: () => this.switchView('gcp') },

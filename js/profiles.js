@@ -93,8 +93,9 @@ class ProfilesManager {
     if (!active) return;
 
     if (window.AuthManager) {
+      const isAuth = !!AuthManager.currentUser?.isAuthenticated;
       AuthManager.currentUser = {
-        isAuthenticated: true,
+        isAuthenticated: isAuth,
         provider: active.provider || 'Ionity SSO',
         name: active.name,
         email: active.email,
@@ -246,9 +247,12 @@ class ProfilesManager {
           </div>
         </div>
       `).join('') + `
-        <div class="profile-dropdown-footer">
+        <div class="profile-dropdown-footer" style="display:flex; flex-direction:column; gap:6px;">
           <button class="btn btn-secondary" style="width:100%; font-size:11px; padding:6px;" onclick="ProfilesManager.openCreateProfileModal()">
             ${renderIcon('userAdd', '', 12)} Add / Manage Profiles
+          </button>
+          <button class="btn btn-secondary" style="width:100%; font-size:11px; padding:6px; color:var(--status-red); border-color:rgba(255,61,113,0.3);" onclick="AuthManager.logout()">
+            🚪 Sign Out / Lock Gate
           </button>
         </div>
       `;

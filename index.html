@@ -37,11 +37,12 @@
   <link rel="stylesheet" href="css/auth-screen.css">
   <link rel="stylesheet" href="css/screenshare.css">
   <link rel="stylesheet" href="css/ocr-inspector.css">
+  <link rel="stylesheet" href="css/ai-edge-gallery.css">
 </head>
 <body>
 
   <!-- ==================== FULL-SCREEN AUTH 2.0 LOGIN GATE ==================== -->
-  <div id="auth-gate-screen" class="authenticated">
+  <div id="auth-gate-screen">
     <div class="auth-card-container">
       <div class="auth-header">
         <div class="auth-logo-badge">
@@ -157,6 +158,13 @@
           </span>
           <span>Unity Workspace</span>
           <span class="nav-item-count" id="nav-docs-count">2</span>
+        </a>
+        <a class="nav-item" data-view="ai-edge" title="Google AI Edge Gallery & Gemma 4 On-Device Suite">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </span>
+          <span>Google AI Edge</span>
+          <span class="nav-item-count" style="color:var(--accent-hover); border-color:rgba(51,102,255,0.4);">GEMMA 4</span>
         </a>
         <a class="nav-item" onclick="OcrInspector.triggerScreenOcr()" style="cursor:pointer;" title="Paddle OCR On-Screen Vision Inspector & AI Reporter">
           <span class="nav-item-icon">
@@ -894,8 +902,335 @@
               </div>
             </div>
           </div>
-        </section>
+        <!-- ==================== VIEW 9: GOOGLE AI EDGE GALLERY ==================== -->
+        <section id="view-ai-edge" class="view-section">
+          <div class="ai-edge-container">
+            <!-- Header Bar -->
+            <div class="ai-edge-header">
+              <div class="ai-edge-title-group">
+                <div class="ai-edge-logo-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" width="20" height="20"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div>
+                  <div class="ai-edge-title">
+                    <span>Google AI Edge Gallery</span>
+                    <span class="pixel-badge accent" id="ai-edge-active-model-badge">FEATURED</span>
+                  </div>
+                  <div class="ai-edge-subtitle">On-Device Generative AI • LiteRT-LM • Gemma 4 • Thinking Mode • 100% Offline</div>
+                </div>
+              </div>
 
+              <!-- Navigation Tabs -->
+              <div class="ai-edge-tabs-nav">
+                <button class="ai-edge-subnav-btn active" data-tab="hub" onclick="AIEdgeGallery.switchTab('hub')">
+                  <span>✨ Gallery Hub</span>
+                </button>
+                <button class="ai-edge-subnav-btn" data-tab="chat" onclick="AIEdgeGallery.switchTab('chat')">
+                  <span>💬 AI Chat & Thinking</span>
+                </button>
+                <button class="ai-edge-subnav-btn" data-tab="vision" onclick="AIEdgeGallery.switchTab('vision')">
+                  <span>👁️ Ask Image (Vision)</span>
+                </button>
+                <button class="ai-edge-subnav-btn" data-tab="audio" onclick="AIEdgeGallery.switchTab('audio')">
+                  <span>🎙️ Audio Scribe</span>
+                </button>
+                <button class="ai-edge-subnav-btn" data-tab="lab" onclick="AIEdgeGallery.switchTab('lab')">
+                  <span>🧪 Prompt Lab & MCP</span>
+                </button>
+                <button class="ai-edge-subnav-btn" data-tab="models" onclick="AIEdgeGallery.switchTab('models')">
+                  <span>📦 Model Checkpoints</span>
+                </button>
+              </div>
+
+              <!-- Active Model & Backend Selectors -->
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <select id="ai-edge-model-select" class="form-select" style="font-size:11px; padding:4px 8px; max-width:180px;">
+                  <option value="gemma-4-e2b">Gemma 4 E2B (2.4B)</option>
+                  <option value="gemma-4-vision">Gemma 4 Vision (4.1B)</option>
+                  <option value="whisper-edge-scribe">Audio Scribe (LiteRT)</option>
+                  <option value="gemini-nano-builtin">Chrome Gemini Nano</option>
+                  <option value="smollm-135m-mobile">SmolLM 135M Mobile</option>
+                </select>
+                <select id="ai-edge-backend-select" class="form-select" style="font-size:11px; padding:4px 8px;">
+                  <option value="WebGPU (Hardware Accelerated)">⚡ WebGPU</option>
+                  <option value="WebNN (Hardware NPU)">🧠 WebNN NPU</option>
+                  <option value="WebAssembly SIMD (CPU)">💻 WASM SIMD</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Telemetry HUD Bar -->
+            <div class="ai-edge-telemetry-hud">
+              <div class="telemetry-item">
+                <span class="telemetry-label">Runtime Engine</span>
+                <span class="telemetry-val" id="ai-edge-telemetry-backend">WebGPU (Hardware Accelerated)</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">Time to First Token (TTFT)</span>
+                <span class="telemetry-val" id="ai-edge-telemetry-ttft">142 ms</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">Decode Speed</span>
+                <span class="telemetry-val accent" id="ai-edge-telemetry-speed">46.8 t/s</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">Inference Latency</span>
+                <span class="telemetry-val" id="ai-edge-telemetry-latency">24 ms</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">Quantized VRAM / RAM</span>
+                <span class="telemetry-val warning" id="ai-edge-telemetry-vram">480 MB</span>
+              </div>
+            </div>
+
+            <!-- TAB 1: GALLERY HUB -->
+            <div id="ai-edge-tab-hub" class="ai-edge-tab-pane active">
+              <div class="ai-edge-hub-grid">
+                <div class="ai-edge-feature-card" onclick="AIEdgeGallery.switchTab('chat')">
+                  <div class="feature-card-icon">🧠</div>
+                  <div class="feature-card-title">AI Chat & Thinking Mode</div>
+                  <div class="feature-card-desc">Run Gemma 4 on-device with transparent step-by-step reasoning tokens, chain-of-thought deliberation, and local RAG context injection.</div>
+                  <span class="pixel-badge accent" style="align-self:flex-start; font-size:8px;">TRY CHAT →</span>
+                </div>
+
+                <div class="ai-edge-feature-card" onclick="AIEdgeGallery.switchTab('vision')">
+                  <div class="feature-card-icon">👁️</div>
+                  <div class="feature-card-title">Ask Image & Camera Studio</div>
+                  <div class="feature-card-desc">Real-time mobile camera capture, image upload, OCR text extraction, visual Q&A, and diagram decomposition via LiteRT-LM Vision.</div>
+                  <span class="pixel-badge" style="color:var(--status-green); border-color:var(--status-green); align-self:flex-start; font-size:8px;">TRY VISION →</span>
+                </div>
+
+                <div class="ai-edge-feature-card" onclick="AIEdgeGallery.switchTab('audio')">
+                  <div class="feature-card-icon">🎙️</div>
+                  <div class="feature-card-title">Audio Scribe & Transcription</div>
+                  <div class="feature-card-desc">Live microphone recording with retro 8-bit frequency visualizer, timestamped speech recognition, and instant SCRUM story conversion.</div>
+                  <span class="pixel-badge" style="color:#FFA000; border-color:#FFA000; align-self:flex-start; font-size:8px;">TRY AUDIO →</span>
+                </div>
+
+                <div class="ai-edge-feature-card" onclick="AIEdgeGallery.switchTab('lab')">
+                  <div class="feature-card-icon">🧪</div>
+                  <div class="feature-card-title">Prompt Lab & Agent Skills</div>
+                  <div class="feature-card-desc">Curated edge agent templates for code refactoring, commercial proposals, sprint user stories, and MCP tool executions.</div>
+                  <span class="pixel-badge" style="color:var(--accent-hover); border-color:var(--accent-hover); align-self:flex-start; font-size:8px;">OPEN LAB →</span>
+                </div>
+              </div>
+
+              <!-- Architecture Banner -->
+              <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px; display:flex; flex-direction:column; gap:8px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-weight:700; font-size:13px;">⚡ Official Google AI Edge Core Specifications</span>
+                  <a href="https://github.com/google-ai-edge/gallery" target="_blank" class="pixel-badge" style="font-size:8px; color:var(--text-muted);">VIEW GITHUB REPO ↗</a>
+                </div>
+                <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+                  Google AI Edge Gallery provides the premier cross-platform destination for running open-weights LLMs entirely on mobile and web client hardware. Featuring the official Gemma 4 architecture, LiteRT-LM compute shaders, and zero-token in-cache inference.
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 2: AI CHAT & THINKING MODE -->
+            <div id="ai-edge-tab-chat" class="ai-edge-tab-pane">
+              <div class="ai-edge-chat-container">
+                <div style="padding:10px 14px; background:var(--bg-card); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span id="ai-edge-active-model-name" style="font-weight:700; font-size:13px;">Gemma 4 E2B Instruct</span>
+                    <span class="pixel-badge accent" style="font-size:8px;">ON-DEVICE</span>
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <button class="btn btn-secondary" style="font-size:11px; padding:3px 8px;" onclick="AIEdgeGallery.exportChat()">📥 Export</button>
+                    <button class="btn btn-secondary" style="font-size:11px; padding:3px 8px;" onclick="AIEdgeGallery.clearChatHistory()">🗑️ Clear</button>
+                  </div>
+                </div>
+
+                <div id="ai-edge-chat-messages" class="ai-edge-chat-messages"></div>
+
+                <form id="ai-edge-chat-form" class="ai-edge-chat-input-bar">
+                  <input type="text" id="ai-edge-chat-input" class="ai-edge-chat-input" placeholder="Ask Gemma 4 with Thinking Mode (e.g., Optimize WebGPU shader pipeline)..." autocomplete="off">
+                  <button type="submit" id="ai-edge-send-btn" class="btn btn-primary" style="padding:0 16px;">
+                    <span>Send</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- TAB 3: ASK IMAGE (VISION & CAMERA STUDIO) -->
+            <div id="ai-edge-tab-vision" class="ai-edge-tab-pane">
+              <div class="ai-edge-split-pane">
+                <!-- Left: Viewfinder / Image Input -->
+                <div class="ai-edge-viewfinder-card">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:700; font-size:13px;">📷 Camera & Image Viewport</span>
+                    <button id="ai-edge-switch-camera-btn" class="btn btn-secondary" style="font-size:11px; padding:3px 8px;" title="Switch Front/Rear Camera on Mobile">🔄 Flip Lens</button>
+                  </div>
+
+                  <div class="viewfinder-viewport">
+                    <!-- Live Camera Feed -->
+                    <div id="ai-edge-vision-live-view" style="display:none; width:100%; height:100%;">
+                      <video id="ai-edge-camera-feed" playsinline autoplay muted></video>
+                    </div>
+
+                    <!-- Uploaded Image Preview -->
+                    <div id="ai-edge-vision-preview-container" style="display:none; width:100%; height:100%;">
+                      <img id="ai-edge-vision-preview" alt="Vision Target">
+                    </div>
+
+                    <!-- Default Placeholder -->
+                    <div id="ai-edge-vision-placeholder" style="display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--text-muted); font-size:12px; text-align:center; padding:20px;">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      <span>No image loaded.<br>Start mobile camera or upload an image file.</span>
+                    </div>
+                  </div>
+
+                  <!-- Viewfinder Controls -->
+                  <div class="viewfinder-controls">
+                    <button class="btn btn-primary" style="font-size:11px;" onclick="AIEdgeGallery.startCamera()">🎥 Start Camera</button>
+                    <button class="btn btn-secondary" style="font-size:11px;" onclick="AIEdgeGallery.captureSnapshot()">📸 Snap Photo</button>
+                    <button class="btn btn-secondary" style="font-size:11px;" onclick="AIEdgeGallery.stopCamera()">⏹️ Stop</button>
+                    <label class="btn btn-outline" style="font-size:11px; cursor:pointer; margin:0;">
+                      📁 Upload Image
+                      <input type="file" id="ai-edge-vision-file-input" accept="image/*" style="display:none;">
+                    </label>
+                    <button class="btn btn-secondary" style="font-size:11px;" onclick="AIEdgeGallery.clearVisionImage()">✕ Clear</button>
+                  </div>
+                </div>
+
+                <!-- Right: Vision Analysis HUD -->
+                <div class="ai-edge-analysis-pane">
+                  <div style="font-weight:700; font-size:13px;">👁️ Multimodal Question & Analysis</div>
+                  <div class="form-group" style="margin:0;">
+                    <input type="text" id="ai-edge-vision-prompt" class="form-input" placeholder="Prompt for image (e.g., Extract all text and analyze UI structure)...">
+                  </div>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-primary" style="font-size:11px;" onclick="AIEdgeGallery.analyzeVisionImage()">⚡ Run On-Device Vision</button>
+                    <button class="btn btn-secondary" style="font-size:11px;" onclick="AIEdgeGallery.analyzeVisionImage('Extract full OCR text and tables')">📄 Extract OCR Text</button>
+                    <button class="btn btn-secondary" style="font-size:11px;" onclick="AIEdgeGallery.analyzeVisionImage('Detect all objects and color palette')">🎨 Object & Colors</button>
+                  </div>
+
+                  <div id="ai-edge-vision-result-output" style="margin-top:10px; flex:1; overflow-y:auto;">
+                    <div class="empty-state" style="padding:30px 10px; text-align:center; color:var(--text-muted); font-size:12px;">
+                      Upload or snap an image and click Run On-Device Vision to inspect with LiteRT-LM & Paddle OCR.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 4: AUDIO SCRIBE -->
+            <div id="ai-edge-tab-audio" class="ai-edge-tab-pane">
+              <div class="ai-edge-split-pane">
+                <!-- Left: Audio Recording & Visualizer -->
+                <div class="ai-edge-viewfinder-card">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:700; font-size:13px;">🎙️ Live Microphone & Acoustic Tensor</span>
+                    <span class="pixel-badge" style="color:var(--status-green); border-color:var(--status-green); font-size:8px;">LITERT WHISPER</span>
+                  </div>
+
+                  <!-- Live 8-Bit Audio Frequency Waveform Canvas -->
+                  <div class="audio-waveform-container">
+                    <canvas id="ai-edge-audio-waveform" width="400" height="100"></canvas>
+                  </div>
+
+                  <div class="viewfinder-controls">
+                    <button id="ai-edge-record-audio-btn" class="btn btn-primary btn-record-scribe" style="font-size:11px;" onclick="AIEdgeGallery.toggleAudioRecording()">
+                      🎙️ Start Live Voice Scribe
+                    </button>
+                    <label class="btn btn-outline" style="font-size:11px; cursor:pointer; margin:0;">
+                      📁 Import Audio File
+                      <input type="file" id="ai-edge-audio-file-input" accept="audio/*" style="display:none;">
+                    </label>
+                  </div>
+
+                  <div style="font-size:11px; color:var(--text-muted); line-height:1.4;">
+                    LiteRT on-device Whisper acoustic pipeline decodes live audio streams into structured text with timestamps, speaker separation, and automated action-item extraction.
+                  </div>
+                </div>
+
+                <!-- Right: Transcript & SCRUM Extraction -->
+                <div class="ai-edge-analysis-pane">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:700; font-size:13px;">📋 Timestamped Transcription & Synthesized Brief</span>
+                    <span class="pixel-badge" style="font-size:8px;">0 TOKENS</span>
+                  </div>
+
+                  <div id="ai-edge-audio-transcript-output" style="flex:1; overflow-y:auto;">
+                    <div class="empty-state" style="padding:30px 10px; text-align:center; color:var(--text-muted); font-size:12px;">
+                      Click "Start Live Voice Scribe" or import an audio file to transcribe locally on your device.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 5: PROMPT LAB & AGENT SKILLS -->
+            <div id="ai-edge-tab-lab" class="ai-edge-tab-pane">
+              <div style="font-weight:700; font-size:14px; margin-bottom:4px;">⚡ Pre-Configured Edge Agent Skills</div>
+              <div class="ai-edge-prompt-grid">
+                <div class="prompt-skill-card" onclick="AIEdgeGallery.runAgentSkill('refactor')">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:700; font-size:13px; color:var(--accent-hover);">💻 Code Refactor & Shader Optimizer</span>
+                    <span class="pixel-badge accent" style="font-size:8px;">SKILL</span>
+                  </div>
+                  <p style="font-size:11px; color:var(--text-secondary); margin:0;">Optimizes WebGPU shader compute passes and minimizes VRAM memory layout.</p>
+                </div>
+
+                <div class="prompt-skill-card" onclick="AIEdgeGallery.runAgentSkill('proposal')">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:700; font-size:13px; color:var(--status-green);">💰 Commercial Proposal Synthesizer</span>
+                    <span class="pixel-badge" style="color:var(--status-green); border-color:var(--status-green); font-size:8px;">CRM</span>
+                  </div>
+                  <p style="font-size:11px; color:var(--text-secondary); margin:0;">Synthesizes 4-stage commercial sales contracts with Antwerp Designs milestones.</p>
+                </div>
+
+                <div class="prompt-skill-card" onclick="AIEdgeGallery.runAgentSkill('scrum')">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:700; font-size:13px; color:#FFA000;">⚡ SCRUM User Story Generator</span>
+                    <span class="pixel-badge" style="color:#FFA000; border-color:#FFA000; font-size:8px;">AGILE</span>
+                  </div>
+                  <p style="font-size:11px; color:var(--text-secondary); margin:0;">Drafts sprint stories in Gherkin syntax with Fibonacci points and acceptance criteria.</p>
+                </div>
+
+                <div class="prompt-skill-card" onclick="AIEdgeGallery.runAgentSkill('retro')">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:700; font-size:13px; color:#FF3D71;">🕹️ 8-Bit Retro Tone Filter</span>
+                    <span class="pixel-badge" style="color:#FF3D71; border-color:#FF3D71; font-size:8px;">RETRO</span>
+                  </div>
+                  <p style="font-size:11px; color:var(--text-secondary); margin:0;">Formats documentation with 8-bit arcade aesthetics, badges, and high energy.</p>
+                </div>
+              </div>
+
+              <!-- Model Context Protocol (MCP) Simulator -->
+              <div style="background:var(--bg-surface); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px; margin-top:14px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-weight:700; font-size:13px;">🔌 Model Context Protocol (MCP) Local Tool Runner</span>
+                  <span class="pixel-badge accent" style="font-size:8px;">MCP PROTOCOL</span>
+                </div>
+                <div style="font-size:12px; color:var(--text-secondary);">
+                  Allows on-device Gemma 4 models to directly query and manipulate local workspace documents, CRM deal stages, and Scrum boards via standardized tool protocols.
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="btn btn-secondary" style="font-size:11px;" onclick="AIEdgeGallery.runMcpToolSimulation('workspace_read_docs')">📄 Call: workspace_read_docs()</button>
+                  <button class="btn btn-secondary" style="font-size:11px;" onclick="AIEdgeGallery.runMcpToolSimulation('crm_query_pipeline')">💼 Call: crm_query_pipeline()</button>
+                  <button class="btn btn-secondary" style="font-size:11px;" onclick="AIEdgeGallery.runMcpToolSimulation('scrum_inspect_sprint')">⚡ Call: scrum_inspect_sprint()</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 6: MODEL CHECKPOINTS (BYOM & HUB) -->
+            <div id="ai-edge-tab-models" class="ai-edge-tab-pane">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <div>
+                  <div style="font-weight:700; font-size:14px;">📦 Curated Edge Models & BYOM Importer</div>
+                  <div style="font-size:11px; color:var(--text-muted);">Switch between official Google AI Edge checkpoints or import your own .litertlm weights.</div>
+                </div>
+                <label class="btn btn-outline" style="font-size:11px; cursor:pointer;">
+                  📥 Load Custom Model (.litertlm / .tflite)
+                  <input type="file" accept=".litertlm,.tflite,.bin,.onnx" style="display:none;" onchange="NotificationManager.showToast('Custom model checkpoint parsed into WebGPU memory buffer!', 'success');">
+                </label>
+              </div>
+
+              <div id="ai-edge-models-grid" class="ai-edge-models-grid"></div>
+            </div>
+          </div>
+        </section>
 
       </main>
     </div>
@@ -1978,6 +2313,34 @@
     </div>
   </div>
 
+  <!-- ==================== DEDICATED MOBILE BOTTOM NAVIGATION DOCK ==================== -->
+  <nav id="mobile-bottom-dock">
+    <button class="mobile-dock-btn" onclick="App.switchView('workspace')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Docs</span>
+    </button>
+    <button class="mobile-dock-btn active" data-edge-tab="hub" onclick="App.switchView('ai-edge'); AIEdgeGallery.switchTab('hub');">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>AI Edge</span>
+    </button>
+    <button class="mobile-dock-btn" data-edge-tab="chat" onclick="App.switchView('ai-edge'); AIEdgeGallery.switchTab('chat');">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Chat</span>
+    </button>
+    <button class="mobile-dock-btn" data-edge-tab="vision" onclick="App.switchView('ai-edge'); AIEdgeGallery.switchTab('vision');">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      <span>Vision</span>
+    </button>
+    <button class="mobile-dock-btn" data-edge-tab="audio" onclick="App.switchView('ai-edge'); AIEdgeGallery.switchTab('audio');">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      <span>Audio</span>
+    </button>
+    <button class="mobile-dock-btn" onclick="App.switchView('crm')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span>CRM</span>
+    </button>
+  </nav>
+
   <!-- Toast Notification Container -->
   <div id="toast-container"></div>
 
@@ -1992,6 +2355,7 @@
   <script src="js/auth.js"></script>
   <script src="js/local-rag.js"></script>
   <script src="js/gemini-service.js"></script>
+  <script src="js/ai-edge-gallery.js"></script>
   <script src="js/workspace.js"></script>
   <script src="js/crm.js"></script>
   <script src="js/scrum.js"></script>

@@ -7,20 +7,14 @@
 class AuthManager {
   static init() {
     this.currentUser = StorageManager.get(STORAGE_KEYS.AUTH, {
-      isAuthenticated: true, // Executive session active by default
+      isAuthenticated: false, // Landing Google Auth screen is default entry point
       provider: 'Google OAuth 2.0',
-      name: 'Johan Wilhelm van Antwerp',
-      email: 'johan@ionity.co.za',
-      role: 'Lead Solutionist',
-      avatar: 'assets/johan-avatar.jpg',
-      signature: 'assets/Johanwilhelmvanantwerpesignatureionity.png',
-      connectedProviders: {
-        google: true,
-        github: true,
-        microsoft: true,
-        claude: true,
-        firebase: true
-      }
+      name: '',
+      email: '',
+      role: '',
+      avatar: '',
+      signature: '',
+      connectedProviders: {}
     });
 
     this.checkAuthStatus();
@@ -42,7 +36,7 @@ class AuthManager {
     const authGate = document.getElementById('auth-gate-screen');
     if (!authGate) return;
 
-    if (this.currentUser.isAuthenticated) {
+    if (this.currentUser && this.currentUser.isAuthenticated) {
       authGate.classList.add('authenticated');
     } else {
       authGate.classList.remove('authenticated');
@@ -143,7 +137,7 @@ class AuthManager {
       avatar: 'assets/johan-avatar.jpg',
       signature: 'assets/Johanwilhelmvanantwerpesignatureionity.png',
       connectedProviders: {
-        ...this.currentUser.connectedProviders,
+        ...(this.currentUser?.connectedProviders || {}),
         google: true
       }
     };
@@ -157,10 +151,14 @@ class AuthManager {
       ProfilesManager.renderHeaderProfileSwitcher();
     }
 
+    if (window.App) {
+      App.switchView('workspace');
+    }
+
     NotificationManager.play8BitChime('victory');
     NotificationManager.sendPushAlert({
       title: '🔑 Google Sign-In Verified (@ionity.today)',
-      body: 'Authenticated via Google OAuth 2.0 domain gate (johan@ionity.today).',
+      body: 'Authenticated via Google OAuth 2.0 domain gate (johan@ionity.today). Welcome to Ionity Central Home.',
       type: 'success'
     });
   }
@@ -201,7 +199,7 @@ class AuthManager {
         avatar: profile.picture || 'assets/johan-avatar.jpg',
         signature: 'assets/Johanwilhelmvanantwerpesignatureionity.png',
         connectedProviders: {
-          ...this.currentUser.connectedProviders,
+          ...(this.currentUser?.connectedProviders || {}),
           google: true
         }
       };
@@ -213,6 +211,10 @@ class AuthManager {
       if (window.ProfilesManager) {
         ProfilesManager.syncWithAuthManager();
         ProfilesManager.renderHeaderProfileSwitcher();
+      }
+
+      if (window.App) {
+        App.switchView('workspace');
       }
 
       NotificationManager.play8BitChime('victory');
@@ -250,7 +252,7 @@ class AuthManager {
       avatar: info.avatar,
       signature: 'assets/Johanwilhelmvanantwerpesignatureionity.png',
       connectedProviders: {
-        ...this.currentUser.connectedProviders,
+        ...(this.currentUser?.connectedProviders || {}),
         [providerName.toLowerCase()]: true
       }
     };
@@ -262,6 +264,10 @@ class AuthManager {
     if (window.ProfilesManager) {
       ProfilesManager.syncWithAuthManager();
       ProfilesManager.renderHeaderProfileSwitcher();
+    }
+
+    if (window.App) {
+      App.switchView('workspace');
     }
 
     NotificationManager.play8BitChime('powerup');
@@ -277,7 +283,7 @@ class AuthManager {
       isAuthenticated: true,
       provider: 'Google OAuth 2.0',
       name: 'Johan Wilhelm van Antwerp',
-      email: 'johan@ionity.co.za',
+      email: 'johan@ionity.today',
       role: 'Lead Solutionist',
       avatar: 'assets/johan-avatar.jpg',
       signature: 'assets/Johanwilhelmvanantwerpesignatureionity.png',
@@ -298,6 +304,10 @@ class AuthManager {
       ProfilesManager.switchProfile('profile-johan');
     }
 
+    if (window.App) {
+      App.switchView('workspace');
+    }
+
     NotificationManager.play8BitChime('victory');
     NotificationManager.sendPushAlert({
       title: '⚡ Executive Session Active',
@@ -307,11 +317,21 @@ class AuthManager {
   }
 
   static logout() {
-    this.currentUser.isAuthenticated = false;
+    this.currentUser = {
+      isAuthenticated: false,
+      provider: 'Google OAuth 2.0',
+      name: '',
+      email: '',
+      role: '',
+      avatar: '',
+      signature: '',
+      connectedProviders: {}
+    };
     StorageManager.set(STORAGE_KEYS.AUTH, this.currentUser);
     this.checkAuthStatus();
+    this.renderUserUI();
     NotificationManager.play8BitChime('gameover');
-    NotificationManager.showToast('Signed out of Ionity Central.', 'info');
+    NotificationManager.showToast('Signed out of Ionity Central. Authentication gate locked.', 'info');
   }
 
   static saveGoogleConfig(clientId, clientSecret) {

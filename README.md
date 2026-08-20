@@ -4,9 +4,10 @@
 
 ![Ionity Central Banner](assets/AEDi.svg)
 
-### Enterprise Unified Workspace, Commercial CRM Pipeline, Agile SCRUM Engine, Moveable Video Camera, P2P Screensharing & On-Device Local Tiny AI
+### Enterprise Unified Workspace, Commercial CRM Pipeline, Agile SCRUM Engine, Moveable Video Camera, P2P Screensharing & Google AI Edge Gallery (Gemma 4 & Mobile Core)
 
 [![Live Production Demo](https://img.shields.io/badge/Live%20Demo-project--hackathon--pr--me.web.app-3366FF?style=for-the-badge&logo=firebase)](https://project-hackathon-pr-me.web.app)
+[![Google AI Edge](https://img.shields.io/badge/Google%20AI%20Edge-Gemma%204%20%2B%20LiteRT-00E676?style=for-the-badge&logo=google)](https://github.com/google-ai-edge/gallery)
 [![Website](https://img.shields.io/badge/Official%20Site-ionity.today-00E676?style=for-the-badge&logo=google-chrome)](https://www.ionity.today)
 [![Cloud Infrastructure](https://img.shields.io/badge/GCP%20Always--Free-e2--micro%20%2B%2030GB-FFA000?style=for-the-badge&logo=google-cloud)](cloudhardware.txt)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge)](LICENSE)
@@ -21,20 +22,24 @@ Official Websites: [www.ionity.today](https://www.ionity.today) | [www.ionity.co
 
 ## 🏛️ Executive Overview
 
-**Ionity Central** is a high-performance, zero-latency progressive enterprise platform combining the versatility of modular document blocks (**Unity 2.0 Docs**), a 4-stage commercial sales pipeline (**Simple CRM**), agile sprint planning (**SCRUM Sprint Hub**), live **Moveable Floating Video Camera & P2P Screenshare**, and an on-device **Local Tiny AI & Semantic RAG Vector Cache**—hosted 100% free across **Firebase Web Hosting** and **Google Cloud Compute Engine (Always-Free Tier)**.
+**Ionity Central** is a high-performance, zero-latency progressive enterprise platform built on the **Google AI Edge Gallery Core** ([github.com/google-ai-edge/gallery](https://github.com/google-ai-edge/gallery)), featuring **Gemma 4 with real-time Thinking Mode**, **Multimodal Vision (Ask Image & Camera Studio)**, **Audio Scribe (Voice Transcription)**, **Prompt Lab (Agent Skills & MCP Tools)**, and a dedicated **Mobile-First Navigation Dock & PWA / Android APK packaging**—combined with modular **Unity 2.0 Docs**, a 4-stage commercial sales pipeline (**Simple CRM**), agile sprint planning (**SCRUM Sprint Hub**), live **Moveable Floating Video Camera & P2P Screenshare**, and an on-device **Local Tiny AI & Semantic RAG Vector Cache**—hosted 100% free across **Firebase Web Hosting** and **Google Cloud Compute Engine (Always-Free Tier)**.
 
 ```
 +-----------------------------------------------------------------------------------------+
 |                                    IONITY CENTRAL                                       |
 +-----------------------------------------------------------------------------------------+
-|  [ UNITY 2.0 DOCS ]   [ 4-STAGE CRM ]   [ SCRUM KANBAN ]   [ P2P SCREENSHARE & CAM ]   |
-|  - Dynamic Blocks     - Check-in        - Backlog          - Floating Draggable Widget |
-|  - Markdown Import    - Quoted          - ⚡ Busy With     - 1-Click Left Corner Dock  |
-|  - Live Focus Timer   - Followed Up     - ✅ 3 Completed   - WebRTC Mesh (0 Firebase)  |
-|  - Retro Badge Meta   - Paid / Won      - Burndown Chart   - VM Session Ledger Log     |
+|  [ GOOGLE AI EDGE CORE ]   [ UNITY 2.0 DOCS ]   [ 4-STAGE CRM ]   [ SCRUM KANBAN ]      |
+|  - Gemma 4 & Thinking Mode - Dynamic Blocks     - Check-in        - Backlog             |
+|  - Ask Image Vision Camera - Markdown Import    - Quoted          - ⚡ Busy With        |
+|  - Audio Scribe Whisper    - Live Focus Timer   - Followed Up     - ✅ 3 Completed      |
+|  - Prompt Lab & MCP Tools  - Retro Badge Meta   - Paid / Won      - Burndown Chart      |
++-----------------------------------------------------------------------------------------+
+|                        [ MOBILE-FIRST & CROSS-PLATFORM DOCK ]                           |
+|   • Dedicated Mobile Bottom Navigation Bar (Docs, AI Edge, Chat, Vision, Audio, CRM)   |
+|   • Mobile Front/Rear Camera Switcher, Touch Audio Recording, Capacitor / Android APK  |
 +-----------------------------------------------------------------------------------------+
 |                   [ LOCAL TINY AI & SEMANTIC RAG CACHE ENGINE ]                         |
-|   • On-Device Chrome Window.AI / Gemini Nano + In-Cache Neural Fallback (0ms, 0 Tokens) |
+|   • On-Device Chrome Window.AI / Gemini Nano + LiteRT-LM WebGPU (0ms, 0 Tokens)         |
 |   • Local Vector Index across Docs, Deals & Tasks with 1-Click Backup to Free Cloud VM  |
 +-----------------------------------------------------------------------------------------+
 |                              [ CLOUD HOSTING & IDENTITY ]                               |
@@ -50,10 +55,13 @@ Official Websites: [www.ionity.today](https://www.ionity.today) | [www.ionity.co
 
 | Layer | Technologies & Dependencies | Highlights |
 |---|---|---|
+| **Edge AI Core** | Google AI Edge Gallery Core, LiteRT-LM, MediaPipe GenAI, Gemma 4 | On-device WebGPU/WebNN shaders, Thinking Mode reasoning trace |
+| **Multimodal Vision** | LiteRT-LM Vision, Paddle OCR Shaders, Mobile MediaDevices API | Real-time front/rear camera switcher, OCR & visual Q&A |
+| **Audio Intelligence**| On-Device LiteRT Whisper Pipeline, Web Audio API, Canvas 8-Bit Visualizer | Timestamped speaker transcription, 1-click SCRUM story creation |
+| **Mobile Architecture**| Mobile Bottom Navigation Dock, Capacitor Shell, PWA Service Worker | Touch-first responsive interface, standalone Android APK support |
 | **Core Client** | Vanilla JavaScript (ES2024), HTML5 Semantic Structure | Zero heavy framework bloat, sub-50ms Time-to-Interactive (TTI) |
 | **Design System** | Vanilla CSS3 Tokens, Custom Glassmorphism & Micro-animations | Canvas `#1A1A1A`, Text `#FFFFFF`, Accent `#3366FF`, 8-Bit `#FFA000` |
 | **Media & Streaming** | WebRTC API, `adapter.js` (v9.0+), `MediaRecorder`, BroadcastChannel | Direct Peer-to-Peer screenshare & moveable webcam PiP |
-| **On-Device AI** | Chrome Built-in AI (`window.ai` / Gemini Nano) & Local Neural Engine | 100% In-Cache on-device inference, 0 network tokens |
 | **Semantic RAG** | Vector Chunking & Inverted TF-IDF Semantic Keyword Index | Chunks Unity docs, CRM finance, and Scrum backlog |
 | **Cloud AI** | Google AI Studio Gemini API (`gemini-1.5-flash`, `gemini-2.0-flash`) | Cache AUC (Active Universal Cache) for 0ms token caching |
 | **Identity & Security** | Google Identity Services (GSI), JWT Decoders, Strict Domain Gate | Strictly restricted to `@ionity.today` and `@ionity.co.za` |

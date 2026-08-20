@@ -1,5 +1,5 @@
-// Ionity Central - Service Worker (PWA & Push Notifications)
-const CACHE_NAME = 'ionity-central-v1.0.0';
+// Ionity Central - Service Worker (PWA, Push & Offline AI Edge Cache)
+const CACHE_NAME = 'ionity-central-v1.1.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -9,6 +9,10 @@ const ASSETS_TO_CACHE = [
   './css/crm.css',
   './css/scrum.css',
   './css/components.css',
+  './css/ai-edge-gallery.css',
+  './css/auth-screen.css',
+  './css/screenshare.css',
+  './css/ocr-inspector.css',
   './js/app.js',
   './js/storage.js',
   './js/auth.js',
@@ -17,6 +21,9 @@ const ASSETS_TO_CACHE = [
   './js/scrum.js',
   './js/notifications.js',
   './js/gcp-helper.js',
+  './js/local-rag.js',
+  './js/gemini-service.js',
+  './js/ai-edge-gallery.js',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './assets/ionity-logo.png',
