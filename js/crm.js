@@ -127,25 +127,46 @@ class CRMManager {
       if (countEl) countEl.textContent = stageDeals.length;
       if (totalEl) totalEl.textContent = `$${stageSum.toLocaleString()}`;
 
-      container.innerHTML = stageDeals.map(deal => `
-        <div class="deal-card" draggable="true" data-deal-id="${deal.id}" 
-             ondragstart="CRMManager.handleDragStart(event, '${deal.id}')"
-             onclick="CRMManager.openDealInspector('${deal.id}')">
-          <div class="deal-card-header">
-            <span class="deal-company">${deal.company || 'Enterprise Corp'}</span>
-            <span class="deal-value-tag">$${Number(deal.value).toLocaleString()}</span>
+      container.innerHTML = stageDeals.map(deal => {
+        const normStage = this.normalizeStage(deal.stage);
+        return `
+          <div class="deal-card" draggable="true" data-deal-id="${deal.id}" 
+               ondragstart="CRMManager.handleDragStart(event, '${deal.id}')"
+               onclick="CRMManager.openDealInspector('${deal.id}')">
+            <div class="deal-card-header">
+              <span class="deal-company">${deal.company || 'Enterprise Corp'}</span>
+              <span class="deal-value-tag">$${Number(deal.value).toLocaleString()}</span>
+            </div>
+            <div class="deal-title">${deal.title}</div>
+            <div class="deal-footer">
+              <div class="deal-contact">${renderIcon('user', '', 12)} ${deal.contact || 'Direct Client'}</div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size: 10px; font-weight: 700; color: var(--accent-hover);">${deal.probability || 50}% Prob</span>
+                ${normStage !== 'paid' ? `
+                  <button class="btn-icon" style="padding:2px 6px; font-size:10px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:4px;" title="Advance Stage" onclick="CRMManager.moveDealNextStage(event, '${deal.id}')">➔</button>
+                ` : `<span style="font-size:10px; color:var(--status-green); font-weight:bold;">🏆 WON</span>`}
+              </div>
+            </div>
+            <div class="deal-probability-bar">
+              <div class="deal-probability-fill" style="width: ${deal.probability || 50}%;"></div>
+            </div>
           </div>
-          <div class="deal-title">${deal.title}</div>
-          <div class="deal-footer">
-            <div class="deal-contact">${renderIcon('user', '', 12)} ${deal.contact || 'Direct Client'}</div>
-            <div style="font-size: 10px; font-weight: 700; color: var(--accent-hover);">${deal.probability || 50}% Prob</div>
-          </div>
-          <div class="deal-probability-bar">
-            <div class="deal-probability-fill" style="width: ${deal.probability || 50}%;"></div>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     });
+  }
+
+  static moveDealNextStage(event, dealId) {
+    if (event) event.stopPropagation();
+    const deal = this.deals.find(d => d.id === dealId);
+    if (!deal) return;
+    const stageFlow = ['checkin', 'quoted', 'followedup', 'paid'];
+    const currentNorm = this.normalizeStage(deal.stage);
+    const currentIndex = stageFlow.indexOf(currentNorm);
+    if (currentIndex >= 0 && currentIndex < stageFlow.length - 1) {
+      const nextStage = stageFlow[currentIndex + 1];
+      this.moveDealStage(dealId, nextStage);
+    }
   }
 
   static handleDragStart(event, dealId) {

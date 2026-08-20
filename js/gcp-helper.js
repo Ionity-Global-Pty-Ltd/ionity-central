@@ -188,7 +188,7 @@ echo "✅ [Ionity GCP Setup] Deployment Complete! App live at http://${vmIp}"
 
   static getSSHCommand() {
     const fbConfig = FirebaseManager.getConfig();
-    const projId = fbConfig.projectId || 'ionity-root-system';
+    const projId = fbConfig.projectId || 'project-hackathon-pr-me';
     return `gcloud compute ssh ionity-central-vm --zone "us-central1-a" --project "${projId}"`;
   }
 
@@ -208,7 +208,7 @@ echo "✅ [Ionity GCP Setup] Deployment Complete! App live at http://${vmIp}"
   static openGoogleCloudWebSSH() {
     NotificationManager.play8BitChime('laser');
     const fbConfig = FirebaseManager.getConfig();
-    const projId = fbConfig.projectId || 'ionity-root-system';
+    const projId = fbConfig.projectId || 'project-hackathon-pr-me';
     const webSshUrl = `https://ssh.cloud.google.com/v2/ssh/projects/${projId}/zones/us-central1-a/instances/ionity-central-vm?authuser=0&hl=en`;
     window.open(webSshUrl, '_blank', 'width=1024,height=700');
     NotificationManager.showToast('🚀 Opening Google Cloud Web SSH terminal...', 'info');

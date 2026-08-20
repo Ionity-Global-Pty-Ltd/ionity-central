@@ -6,7 +6,7 @@
 
 ### Enterprise Unified Workspace, Commercial CRM Pipeline, Agile SCRUM Engine, Moveable Video Camera, P2P Screensharing & On-Device Local Tiny AI
 
-[![Live Production Demo](https://img.shields.io/badge/Live%20Demo-ionity--root--system.web.app-3366FF?style=for-the-badge&logo=firebase)](https://ionity-root-system.web.app)
+[![Live Production Demo](https://img.shields.io/badge/Live%20Demo-project--hackathon--pr--me.web.app-3366FF?style=for-the-badge&logo=firebase)](https://project-hackathon-pr-me.web.app)
 [![Website](https://img.shields.io/badge/Official%20Site-ionity.today-00E676?style=for-the-badge&logo=google-chrome)](https://www.ionity.today)
 [![Cloud Infrastructure](https://img.shields.io/badge/GCP%20Always--Free-e2--micro%20%2B%2030GB-FFA000?style=for-the-badge&logo=google-cloud)](cloudhardware.txt)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge)](LICENSE)
@@ -128,17 +128,17 @@ Open your browser at: **`http://127.0.0.1:8080/`**
 firebase login
 
 # 2. Deploy to Live Production
-firebase deploy --only hosting --project ionity-root-system
+firebase deploy --only hosting --project project-hackathon-pr-me
 ```
 
-Production URL: **`https://ionity-root-system.web.app`**
+Production URL: **`https://project-hackathon-pr-me.web.app`**
 
 ### Option B: Provision Always-Free Google Cloud VM
 
 Run the automated orchestrator in PowerShell:
 
 ```powershell
-.\tools\deploy-gcp-vm.ps1 -ProjectId "ionity-root-system" -Zone "us-central1-a"
+.\tools\deploy-gcp-vm.ps1 -ProjectId "project-hackathon-pr-me" -Zone "us-central1-a"
 ```
 
 The script automatically:
@@ -152,7 +152,8 @@ The script automatically:
 
 ## 📚 Documentation & Wiki
 
-Explore detailed documentation in the [`wiki/`](wiki/) directory:
+Explore detailed documentation and technical indices:
+* [Master Architecture & Workspace Index](WORKSPACE_INDEX.md)
 * [Architecture & Cloud Topology](wiki/Architecture.md)
 * [Local Tiny AI & Semantic RAG Guide](wiki/Local-AI-and-RAG.md)
 * [P2P Screenshare & Video Camera Setup](wiki/P2P-Screenshare-and-Webcam.md)

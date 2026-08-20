@@ -13,8 +13,9 @@
 /* Page Sub-navigation / Tree in Workspace */
 .workspace-page-tree {
   width: 240px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 16px 12px;
   display: flex;
@@ -24,6 +25,7 @@
   height: fit-content;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 
 .tree-header {
@@ -39,39 +41,42 @@
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
 }
 
 .tree-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .tree-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 8px;
+  padding: 7px 10px;
   border-radius: var(--radius-md);
   color: var(--text-muted);
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
+  border: 1px solid transparent;
 }
 
 .tree-item:hover {
   background: var(--bg-surface-elevated);
   color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .tree-item.active {
   background: var(--accent-subtle);
   color: var(--text-main);
-  font-weight: 600;
-  border: 1px solid rgba(51, 102, 255, 0.3);
+  font-weight: 700;
+  border: 1px solid rgba(51, 102, 255, 0.4);
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .tree-item-icon {
@@ -113,14 +118,15 @@
 /* Notion Document Viewport */
 .doc-viewport {
   flex: 1;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* Document Top Banner / Cover */
@@ -505,14 +511,28 @@
 
 /* 8-Bit Focus Sprint Timer Block */
 .block-focus-timer {
-  background: linear-gradient(135deg, #182030 0%, #10141e 100%);
-  border: 1px solid rgba(51, 102, 255, 0.3);
+  background: linear-gradient(135deg, rgba(24, 32, 48, 0.95) 0%, rgba(16, 20, 30, 0.98) 100%);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(51, 102, 255, 0.4);
   border-radius: var(--radius-lg);
-  padding: 18px 24px;
+  padding: 20px 28px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  gap: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(51, 102, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.block-focus-timer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100%;
+  background: radial-gradient(circle at 100% 50%, rgba(51, 102, 255, 0.15), transparent 70%);
+  pointer-events: none;
 }
 
 .timer-header {
@@ -526,31 +546,36 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 20px;
 }
 
 .timer-digits {
-  font-size: 28px;
-  color: var(--accent-primary);
-  text-shadow: 0 0 12px rgba(51, 102, 255, 0.5);
-  letter-spacing: 2px;
+  font-size: 32px;
+  color: var(--accent-hover);
+  text-shadow: 0 0 16px rgba(51, 102, 255, 0.6);
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .timer-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 /* 8-Bit Synthesizer Soundboard Block */
 .block-soundboard {
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .soundboard-header {
@@ -561,36 +586,39 @@
 
 .soundboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
 }
 
 .sound-chip-btn {
-  background: var(--bg-primary);
+  background: var(--bg-surface-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 10px 12px;
+  padding: 12px 14px;
   color: var(--text-main);
   font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .sound-chip-btn:hover {
-  background: var(--accent-subtle);
+  background: rgba(51, 102, 255, 0.15);
   border-color: var(--accent-primary);
-  color: var(--accent-hover);
-  transform: translateY(-1px);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(51, 102, 255, 0.35);
+  transform: translateY(-2px);
 }
 
 .sound-chip-btn:active {
   transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 

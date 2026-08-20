@@ -11,10 +11,10 @@ const FIREBASE_STORAGE_KEYS = {
 };
 
 const DEFAULT_FIREBASE_CONFIG = {
-  projectId: 'ionity-root-system',
+  projectId: 'project-hackathon-pr-me',
   apiKey: '',
-  authDomain: 'ionity-root-system.firebaseapp.com',
-  storageBucket: 'ionity-root-system.appspot.com',
+  authDomain: 'project-hackathon-pr-me.firebaseapp.com',
+  storageBucket: 'project-hackathon-pr-me.appspot.com',
   messagingSenderId: '',
   appId: '',
   measurementId: '',
@@ -37,7 +37,7 @@ class FirebaseManager {
       try {
         if (!firebase.apps.length) {
           firebase.initializeApp({
-            projectId: this.config.projectId || 'ionity-root-system',
+            projectId: this.config.projectId || 'project-hackathon-pr-me',
             apiKey: this.config.apiKey || 'AIzaSyDemoKeyIonityFreeTier',
             authDomain: this.config.authDomain || `${this.config.projectId}.firebaseapp.com`,
             storageBucket: this.config.storageBucket || `${this.config.projectId}.appspot.com`

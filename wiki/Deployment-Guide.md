@@ -8,17 +8,17 @@ This guide covers deploying Ionity Central to **Firebase Hosting** and the **Alw
 # Authenticate
 firebase login
 
-# Deploy to ionity-root-system
-firebase deploy --only hosting --project ionity-root-system
+# Deploy to project-hackathon-pr-me
+firebase deploy --only hosting --project project-hackathon-pr-me
 ```
 
-Production Endpoint: `https://ionity-root-system.web.app`
+Production Endpoint: `https://project-hackathon-pr-me.web.app`
 
 ## 2. Google Cloud VM Provisioning (e2-micro Always Free)
 
 Run the PowerShell orchestrator:
 ```powershell
-.\tools\deploy-gcp-vm.ps1 -ProjectId "ionity-root-system" -Zone "us-central1-a"
+.\tools\deploy-gcp-vm.ps1 -ProjectId "project-hackathon-pr-me" -Zone "us-central1-a"
 ```
 
 The script performs:
@@ -31,5 +31,5 @@ The script performs:
 ## 3. SSH Connectivity
 
 - **Google Cloud Web SSH**: Click `🚀 1-Click Web SSH` in the app dashboard.
-- **CLI**: `gcloud compute ssh ionity-central-vm --zone "us-central1-a" --project "ionity-root-system"`
+- **CLI**: `gcloud compute ssh ionity-central-vm --zone "us-central1-a" --project "project-hackathon-pr-me"`
 - **In-Browser WebSSH (ttyd)**: Run `bash tools/setup-webssh-ttyd.sh` on the VM.

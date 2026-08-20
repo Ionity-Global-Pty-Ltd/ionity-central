@@ -1,9 +1,8 @@
 {
   "projects": {
-    "default": "ionity-root-system",
-    "production": "ionity-root-system",
-    "action": "ionity-action-1787",
-    "aedi": "aedi-iot-hub",
-    "africa": "africa-edc-ionity"
+    "default": "project-hackathon-pr-me",
+    "production": "project-hackathon-pr-me",
+    "hackathon": "project-hackathon-pr-me",
+    "root": "ionity-root-system"
   }
 }

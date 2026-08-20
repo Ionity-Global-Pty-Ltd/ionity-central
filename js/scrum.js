@@ -78,13 +78,14 @@ class ScrumManager {
 
     const idealPoints = days.map((d, i) => `${getX(i)},${getY(d.ideal)}`).join(' ');
     const actualPoints = days.map((d, i) => `${getX(i)},${getY(d.actual)}`).join(' ');
+    const areaPoints = `${getX(0)},${getY(0)} ${actualPoints} ${getX(days.length - 1)},${getY(0)}`;
 
     chartWrap.innerHTML = `
       <div class="burndown-card">
         <div class="burndown-header">
           <div>
-            <span class="pixel-badge" style="font-size: 8px;">INTERACTIVE BURNDOWN</span>
-            <div style="font-weight: 700; font-size: 13px; margin-top: 4px;">Sprint 42 Velocity & Burndown Trajectory</div>
+            <span class="pixel-badge" style="font-size: 8px; color:var(--accent-hover); border-color:var(--accent-primary);">⚡ INTERACTIVE BURNDOWN</span>
+            <div style="font-weight: 800; font-size: 13.5px; margin-top: 4px; letter-spacing:-0.2px;">Sprint 42 Velocity & Burndown Trajectory</div>
           </div>
           <div style="display:flex; gap:16px; font-size:11px;">
             <div style="display:flex; align-items:center; gap:6px;">
@@ -92,30 +93,47 @@ class ScrumManager {
               <span>Ideal Guideline</span>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
-              <span style="display:inline-block; width:12px; height:3px; background:var(--accent-primary);"></span>
+              <span style="display:inline-block; width:12px; height:3px; background:var(--accent-primary); box-shadow:0 0 6px var(--accent-primary);"></span>
               <span>Actual Burn (${remainingPts} pts remaining)</span>
             </div>
           </div>
         </div>
         <div style="width: 100%; overflow-x: auto;">
           <svg viewBox="0 0 ${svgWidth} ${svgHeight}" style="width: 100%; max-height: 140px; overflow: visible;">
+            <defs>
+              <linearGradient id="scrumBurnArea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3366FF" stop-opacity="0.45" />
+                <stop offset="100%" stop-color="#3366FF" stop-opacity="0.0" />
+              </linearGradient>
+              <filter id="scrumGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
             <!-- Grid lines -->
             <line x1="${padding}" y1="${getY(0)}" x2="${svgWidth - padding}" y2="${getY(0)}" stroke="#333333" stroke-width="1" />
             <line x1="${padding}" y1="${getY(totalPts/2)}" x2="${svgWidth - padding}" y2="${getY(totalPts/2)}" stroke="#282828" stroke-dasharray="4" stroke-width="1" />
             <line x1="${padding}" y1="${getY(totalPts)}" x2="${svgWidth - padding}" y2="${getY(totalPts)}" stroke="#282828" stroke-dasharray="4" stroke-width="1" />
 
+            <!-- Area under actual curve -->
+            <polygon fill="url(#scrumBurnArea)" points="${areaPoints}" />
+
             <!-- Ideal line -->
             <polyline fill="none" stroke="#666666" stroke-width="2" stroke-dasharray="6,4" points="${idealPoints}" />
 
             <!-- Actual line -->
-            <polyline fill="none" stroke="var(--accent-primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${actualPoints}" />
+            <polyline fill="none" stroke="var(--accent-primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#scrumGlow)" points="${actualPoints}" />
 
             <!-- Actual Data Point Dots -->
             ${days.map((d, i) => `
-              <circle cx="${getX(i)}" cy="${getY(d.actual)}" r="4" fill="var(--accent-primary)" stroke="#FFFFFF" stroke-width="1.5">
+              <circle cx="${getX(i)}" cy="${getY(d.actual)}" r="4.5" fill="var(--accent-hover)" stroke="#FFFFFF" stroke-width="2" style="filter: drop-shadow(0 0 6px var(--accent-primary)); cursor: pointer;">
                 <title>${d.d}: ${d.actual} pts remaining</title>
               </circle>
-              <text x="${getX(i)}" y="${svgHeight - 10}" text-anchor="middle" fill="var(--text-muted)" font-size="10" font-family="var(--font-mono)">${d.d}</text>
+              <text x="${getX(i)}" y="${svgHeight - 8}" text-anchor="middle" fill="var(--text-muted)" font-size="10.5" font-family="var(--font-mono)" font-weight="700">${d.d}</text>
             `).join('')}
           </svg>
         </div>

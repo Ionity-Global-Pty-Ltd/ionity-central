@@ -300,15 +300,30 @@ class WorkspaceManager {
         const timerData = block.timerData || { minutes: 25, seconds: 0, initial: 25, isRunning: false };
         const minStr = String(timerData.minutes).padStart(2, '0');
         const secStr = String(timerData.seconds).padStart(2, '0');
+        const totalSecs = (timerData.minutes * 60) + timerData.seconds;
+        const initialSecs = (timerData.initial || 25) * 60;
+        const pct = initialSecs > 0 ? Math.round(((initialSecs - totalSecs) / initialSecs) * 100) : 0;
+        const circ = 2 * Math.PI * 24;
+        const offset = circ - (circ * (pct / 100));
 
         contentHtml = `
           <div class="block-focus-timer">
             <div class="timer-header">
               <span class="pixel-badge" style="font-size: 8px;">8-BIT FOCUS SPRINT TIMER</span>
-              <span style="font-size: 11px; color: var(--text-muted);">Deep Work & Agile Tasks</span>
+              <span style="font-size: 11px; color: var(--text-muted);">Deep Work & Agile Tasks • ${pct}% Elapsed</span>
             </div>
             <div class="timer-display-wrap">
-              <div class="timer-digits font-8bit" id="timer-display-${index}">${minStr}:${secStr}</div>
+              <div style="display:flex; align-items:center; gap:16px;">
+                <div style="position:relative; width:64px; height:64px; display:flex; align-items:center; justify-content:center;">
+                  <svg width="64" height="64" viewBox="0 0 64 64" style="transform: rotate(-90deg);">
+                    <circle cx="32" cy="32" r="24" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5" />
+                    <circle cx="32" cy="32" r="24" fill="none" stroke="var(--accent-hover)" stroke-width="5" stroke-linecap="round"
+                            stroke-dasharray="${circ}" stroke-dashoffset="${offset}" style="transition: stroke-dashoffset 0.5s ease; filter: drop-shadow(0 0 6px var(--accent-glow));" />
+                  </svg>
+                  <span style="position:absolute; font-size:12px;">⏱️</span>
+                </div>
+                <div class="timer-digits font-8bit" id="timer-display-${index}">${minStr}:${secStr}</div>
+              </div>
               <div class="timer-controls">
                 <button class="btn btn-primary" onclick="WorkspaceManager.toggleTimer(${index})">
                   ${timerData.isRunning ? '⏸ Pause' : '▶ Start Focus'}

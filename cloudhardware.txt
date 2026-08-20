@@ -32,7 +32,7 @@ under Google Cloud Platform Free Tier, Firebase Spark Plan, and Google AI Studio
   - Target 2: https://central.ionity.digital
   - Target 3: https://central.ionity.today
   - Target 4: https://central.ionity.co.za
-  - Primary: https://ionity-root-system.web.app
+  - Primary: https://project-hackathon-pr-me.web.app
 • Single Page Application: Automatic SPA fallback routing to /index.html
 • Cost: $0.00 / month (Indefinite Free Quota)
 

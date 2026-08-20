@@ -55,7 +55,7 @@ firebase login
 ### Step 2: 1-Click PowerShell Deployment
 Run our automated script:
 ```powershell
-.\deploy-firebase.ps1 -ProjectId "ionity-central"
+.\deploy-firebase.ps1 -ProjectId "project-hackathon-pr-me"
 ```
 *Or simply run `firebase deploy --only hosting`.*
 
