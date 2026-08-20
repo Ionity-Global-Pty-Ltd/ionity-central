@@ -1,0 +1,210 @@
+/* ==========================================================================
+   IONITY CENTRAL - FULLSCREEN AUTH 2.0 LOGIN SCREEN
+   ========================================================================== */
+
+#auth-gate-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #121212;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(51, 102, 255, 0.22) 0%, transparent 60%),
+    radial-gradient(circle at 10% 90%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+}
+
+#auth-gate-screen.authenticated {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.02);
+}
+
+.auth-card-container {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(51, 102, 255, 0.2);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), #00E5FF, var(--accent-primary));
+}
+
+.auth-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-logo-badge {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(51, 102, 255, 0.2), rgba(0, 229, 255, 0.1));
+  border: 1px solid rgba(51, 102, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(51, 102, 255, 0.4);
+  margin-bottom: 4px;
+}
+
+.auth-logo-badge img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.auth-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #FFFFFF;
+}
+
+.auth-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Auth Methods & SSO Buttons */
+.auth-providers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-auth-provider {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-elevated);
+  color: #FFFFFF;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-sans);
+  position: relative;
+}
+
+.btn-auth-provider:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.btn-auth-provider.primary-google {
+  background: #FFFFFF;
+  color: #1F1F1F;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+}
+
+.btn-auth-provider.primary-google:hover {
+  background: #F3F3F3;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-subtle);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 4px 0;
+}
+
+.auth-divider::before, .auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+/* Fast Demo / Executive Login */
+.demo-auth-banner {
+  background: rgba(51, 102, 255, 0.08);
+  border: 1px solid rgba(51, 102, 255, 0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.demo-auth-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.demo-auth-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.demo-auth-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Google OAuth 2.0 Credentials Drawer Toggle */
+.oauth-config-toggle {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--accent-hover);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 4px;
+}
+
+.oauth-inline-config {
+  display: none;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.oauth-inline-config.open {
+  display: flex;
+}

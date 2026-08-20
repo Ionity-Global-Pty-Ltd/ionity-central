@@ -1,0 +1,303 @@
+/**
+ * IONITY CENTRAL - MOVEABLE VIDEO CAMERA & SCREENSHARE STYLES
+ * High-performance 60fps PiP, glassmorphism, corner docking, and fullscreen HUD.
+ */
+
+.floating-camera-widget {
+  position: fixed;
+  width: 340px;
+  background: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  z-index: 9990;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), height 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s ease;
+  user-select: none;
+}
+
+/* Corner Docking Defaults */
+.floating-camera-widget.docked-left-bottom {
+  bottom: 24px;
+  left: 24px;
+  right: auto;
+  top: auto;
+}
+
+.floating-camera-widget.docked-left-top {
+  top: 80px;
+  left: 24px;
+  right: auto;
+  bottom: auto;
+}
+
+.floating-camera-widget.is-dragging {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 0 2px var(--accent-primary);
+  opacity: 0.95;
+  transition: none;
+}
+
+/* Fullscreen Mode */
+.floating-camera-widget.is-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  z-index: 10000 !important;
+  border: none !important;
+}
+
+.floating-camera-widget.is-fullscreen .camera-viewport-wrap {
+  height: calc(100vh - 100px);
+}
+
+/* Minimized Mode */
+.floating-camera-widget.is-collapsed .camera-viewport-wrap,
+.floating-camera-widget.is-collapsed .camera-widget-controls {
+  display: none !important;
+}
+
+/* Header & Drag Handle */
+.camera-widget-header {
+  padding: 8px 12px;
+  background: #141414;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: grab;
+}
+
+.camera-widget-header:active {
+  cursor: grabbing;
+}
+
+.camera-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.camera-widget-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.camera-widget-title {
+  font-size: 9px;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+.camera-live-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FF3D71;
+  box-shadow: 0 0 8px #FF3D71;
+  animation: cameraPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes cameraPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+}
+
+.camera-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cam-hdr-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.cam-hdr-btn:hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-main);
+}
+
+/* Viewport Area */
+.camera-viewport-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0d0d0d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.camera-video-screen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+/* Webcam PiP Overlay inside Screen */
+.camera-video-pip {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 90px;
+  height: 68px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--accent-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  object-fit: cover;
+  z-index: 10;
+}
+
+.camera-idle-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+}
+
+.camera-idle-watermark {
+  width: 44px;
+  height: 44px;
+  opacity: 0.85;
+}
+
+.camera-idle-badge {
+  margin-top: 10px;
+}
+
+/* Live HUD Overlay */
+.camera-live-hud {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.camera-hud-top {
+  display: flex;
+  gap: 6px;
+}
+
+.camera-hud-chip {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+.camera-hud-chip.red {
+  color: #FF3D71;
+  border-color: rgba(255, 61, 113, 0.4);
+}
+
+.camera-hud-chip.green {
+  color: #00E676;
+  border-color: rgba(0, 230, 118, 0.4);
+}
+
+.camera-hud-watermark {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Controls Toolbar */
+.camera-widget-controls {
+  padding: 8px 12px;
+  background: #141414;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cam-ctrl-btn {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.cam-ctrl-btn:hover {
+  background: var(--bg-surface-elevated);
+  border-color: var(--accent-primary);
+}
+
+.cam-ctrl-btn.primary {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #fff;
+}
+
+.cam-ctrl-btn.primary:hover {
+  background: var(--accent-hover);
+}
+
+.cam-ctrl-btn.active {
+  background: rgba(0, 230, 118, 0.15);
+  border-color: #00E676;
+  color: #00E676;
+}
+
+.cam-ctrl-btn.record.active {
+  background: rgba(255, 61, 113, 0.15);
+  border-color: #FF3D71;
+  color: #FF3D71;
+}
+
+.cam-ctrl-btn.muted {
+  color: var(--status-red);
+  border-color: rgba(255, 61, 113, 0.3);
+}
+
+.rec-dot-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FF3D71;
+  display: inline-block;
+}

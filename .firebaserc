@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "ionity-root-system",
+    "production": "ionity-root-system",
+    "action": "ionity-action-1787",
+    "aedi": "aedi-iot-hub",
+    "africa": "africa-edc-ionity"
+  }
+}

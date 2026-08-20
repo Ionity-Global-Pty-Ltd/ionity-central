@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ionity Central | Unified Workspace, CRM & SCRUM</title>
+  <meta name="description" content="Global Unity workspace, simple CRM pipeline, agile SCRUM sprint tracker, Google OAuth 2.0, and PWA cross-device notifications. Branded for Ionity Global & Antwerp Designs.">
+  <meta name="theme-color" content="#3366FF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="author" content="Johan Wilhelm van Antwerp | Antwerp Designs">
+
+  <!-- Favicon & PWA Manifest -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Google Identity Services (GSI) for Google OAuth 2.0 -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- WebRTC Adapter SDK for MediaStream & Screenshare -->
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+  <!-- Firebase 10.13.0 Web SDKs (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-analytics-compat.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/workspace.css">
+  <link rel="stylesheet" href="css/crm.css">
+  <link rel="stylesheet" href="css/scrum.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/auth-screen.css">
+  <link rel="stylesheet" href="css/screenshare.css">
+</head>
+<body>
+
+  <!-- ==================== FULL-SCREEN AUTH 2.0 LOGIN GATE ==================== -->
+  <div id="auth-gate-screen" class="authenticated">
+    <div class="auth-card-container">
+      <div class="auth-header">
+        <div class="auth-logo-badge">
+          <img src="assets/ionity-logo-vector.svg" alt="Ionity Logo" onerror="this.src='assets/ionity-logo.png'">
+        </div>
+        <div class="auth-title">IONITY CENTRAL</div>
+        <div class="auth-subtitle">Unified Enterprise Workspace & Auth 2.0 Gate</div>
+        <div style="display:flex; justify-content:center; margin-top:6px;">
+          <span class="pixel-badge" style="font-size:8px; color:var(--status-green); border-color:var(--status-green);">🛡️ GOOGLE OAUTH: @ionity.today ACCOUNTS ONLY</span>
+        </div>
+      </div>
+
+      <!-- Google OAuth 2.0 Primary Sign-In -->
+      <div class="auth-providers-list">
+        <!-- Live Google GSI Button Container -->
+        <div id="gsi-gate-button-container" style="display:flex; justify-content:center;"></div>
+
+        <!-- Google Direct Button -->
+        <button class="btn-auth-provider primary-google" onclick="AuthManager.loginWithGoogle()">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+          <span>Continue with Google (@ionity.today Only)</span>
+        </button>
+
+
+        <div class="auth-divider">or sign in with enterprise sso</div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <button class="btn-auth-provider" onclick="AuthManager.loginWithProvider('GitHub')">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            <span>GitHub</span>
+          </button>
+          <button class="btn-auth-provider" onclick="AuthManager.loginWithProvider('Microsoft')">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#f25022" d="M1 1h10v10H1z"/><path fill="#00a4ef" d="M1 13h10v10H1z"/><path fill="#7fba00" d="M13 1h10v10H13z"/><path fill="#ffb900" d="M13 13h10v10H13z"/></svg>
+            <span>Microsoft</span>
+          </button>
+        </div>
+
+        <button class="btn-auth-provider" onclick="AuthManager.loginWithProvider('Claude')">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="color:#D97706;"><path d="M12 2L15 8L22 9L17 14L18.5 21L12 17.5L5.5 21L7 14L2 9L9 8L12 2Z"/></svg>
+          <span>Connect via Claude / Anthropic Key</span>
+        </button>
+      </div>
+
+      <!-- Fast Demo Executive Account -->
+      <div class="demo-auth-banner">
+        <div class="demo-auth-info">
+          <div class="demo-auth-title">Johan Wilhelm van Antwerp</div>
+          <div class="demo-auth-desc">Solutionist • Ionity Global & Antwerp Designs</div>
+        </div>
+        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 11px;" onclick="AuthManager.loginWithDemo()">1-Click Login</button>
+      </div>
+
+      <!-- Quick Google Client ID Input -->
+      <div class="oauth-config-toggle" onclick="
+        const box = document.getElementById('oauth-login-config-box');
+        box.classList.toggle('open');
+      ">⚙️ Set Custom Google Client ID</div>
+
+      <div id="oauth-login-config-box" class="oauth-inline-config">
+        <div style="font-size: 11px; color: var(--text-muted);">Paste your Google Cloud Console OAuth 2.0 Web Client ID:</div>
+        <input type="text" id="login-google-client-id" class="form-input" placeholder="xxxx.apps.googleusercontent.com" style="font-size: 11px; padding: 6px 10px;">
+        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px;" onclick="
+          const val = document.getElementById('login-google-client-id').value;
+          if(val) { AuthManager.saveGoogleConfig(val, ''); NotificationManager.showToast('Client ID saved! Click Continue with Google.', 'success'); }
+        ">Save & Activate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN WORKSPACE APP ==================== -->
+  <div id="app">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="https://www.ionity.today" target="_blank" class="brand-badge" title="Ionity Global">
+          <img src="assets/ionity-logo-vector.svg" alt="Ionity Logo" class="brand-logo" onerror="this.src='assets/ionity-logo.png'">
+          <div class="brand-info">
+            <div class="brand-title">
+              <span>IONITY</span>
+              <span class="brand-tag">CENTRAL</span>
+            </div>
+            <span style="font-size: 10px; color: var(--text-muted);">Antwerp Designs</span>
+          </div>
+        </a>
+        <button class="sidebar-collapse-btn" onclick="App.toggleSidebar()" title="Toggle Sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="workspace-selector-wrapper">
+        <div class="workspace-chip" onclick="App.openCommandPalette()">
+          <div class="workspace-chip-info">
+            <div class="workspace-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div>
+              <div style="font-weight: 700; line-height: 1.2;">Global Workspace</div>
+              <div style="font-size: 10px; color: var(--text-muted);">ionity.co.za / today</div>
+            </div>
+          </div>
+          <span style="font-size: 11px; color: var(--text-subtle);">Ctrl+K</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Systems</div>
+        <a class="nav-item active" data-view="workspace">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </span>
+          <span>Unity Workspace</span>
+          <span class="nav-item-count" id="nav-docs-count">2</span>
+        </a>
+        <a class="nav-item" onclick="ScreenshareManager.snapToDefaultLeftCorner(); ScreenshareManager.toggleScreenshare();" style="cursor:pointer;" title="P2P Screenshare & Moveable Camera">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="10" r="2" fill="#00E676" stroke="#00E676"/></svg>
+          </span>
+          <span>P2P Screenshare</span>
+          <span class="nav-item-count" style="color:var(--status-green); border-color:rgba(0,230,118,0.3);">LIVE</span>
+        </a>
+        <a class="nav-item" data-view="recorder">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="10" r="3" fill="#FF3D71" stroke="#FF3D71"/></svg>
+          </span>
+          <span>Screen Recorder</span>
+          <span class="nav-item-count" style="color:var(--status-red); border-color:rgba(255,61,113,0.3);">REC</span>
+        </a>
+        <a class="nav-item" data-view="watermark">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/><polygon points="12 8 9 13 12 13 11 17 15 11 12 11 12 8" fill="#3366FF" stroke="#3366FF" stroke-width="1"/></svg>
+          </span>
+          <span>Watermark Studio</span>
+        </a>
+        <a class="nav-item" data-view="profiles">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <span>Profiles & Signatures</span>
+        </a>
+        <a class="nav-item" data-view="crm">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </span>
+          <span>Simple CRM</span>
+          <span class="nav-item-count" id="nav-crm-count">5</span>
+        </a>
+        <a class="nav-item" data-view="scrum">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/></svg>
+          </span>
+          <span>SCRUM Sprints</span>
+          <span class="nav-item-count" id="nav-scrum-count">7</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 12px;">Cloud & Auth Integrations</div>
+        <a class="nav-item" data-view="auth">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          <span>Google & OAuth 2.0</span>
+        </a>
+        <a class="nav-item" data-view="gcp">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          </span>
+          <span>Google Cloud VM</span>
+        </a>
+        <a class="nav-item" data-view="settings">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </span>
+          <span>Preferences</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-card" onclick="ProfilesManager.openCreateProfileModal(ProfilesManager.activeProfileId)" title="Edit Active Identity & Digital Signatures">
+          <div class="user-avatar" id="user-profile-avatar">J</div>
+          <div class="user-meta">
+            <div class="user-name" id="user-profile-name">Johan Wilhelm van Antwerp</div>
+            <div class="user-role" id="user-profile-role">
+              <span class="auth-provider-badge">Google</span> Solutionist
+            </div>
+          </div>
+          <button class="btn-icon" style="padding:4px;" title="Switch Profile" onclick="event.stopPropagation(); App.switchView('profiles');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Frame -->
+    <div class="main-wrapper">
+      <!-- Top Navigation Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="mobile-menu-btn" onclick="App.toggleSidebar()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <div class="header-breadcrumbs">
+            <span class="breadcrumb-item" onclick="App.switchView('workspace')">Ionity Central</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current" id="header-breadcrumb-current">Workspace Docs</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Live Cloud Sync Status Pill -->
+          <div id="header-sync-status-pill" class="sync-status-pill">
+            <span class="sync-dot online"></span>
+            <span>Google Cloud Synced</span>
+          </div>
+
+          <!-- Quick Screen Record Button -->
+          <button class="btn btn-record-quick" onclick="ScreenRecorderManager.openRecordStudioModal()" title="Record Screen with Watermark (Ctrl+Shift+R)">
+            <span class="record-pulse-dot"></span>
+            <span>Record Screen</span>
+          </button>
+
+          <!-- Quick Watermark Studio Button -->
+          <button class="btn btn-secondary btn-watermark-quick" onclick="App.switchView('watermark')" title="Logo Watermark Studio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/><polygon points="12 8 9 13 12 13 11 17 15 11 12 11 12 8" fill="#3366FF" stroke="#3366FF" stroke-width="1"/></svg>
+            <span>Watermark</span>
+          </button>
+
+          <!-- 8-Bit Audio Sound Toggle -->
+          <button id="header-sound-toggle-btn" class="btn-icon" onclick="NotificationManager.toggleSound()" title="Sound FX Enabled (Click to mute)">
+            🔊
+          </button>
+
+          <button class="search-trigger-btn" onclick="App.openCommandPalette()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <span>Search or command...</span>
+            <span class="kbd-shortcut">Ctrl+K</span>
+          </button>
+
+          <button id="pwa-install-btn" class="btn btn-outline" style="display: none;" onclick="App.triggerPwaInstall()">
+            <span>📱 Install App</span>
+          </button>
+
+          <button class="btn btn-secondary" onclick="WorkspaceManager.triggerAiAssistant()" title="Claude & Ionity AI Workspace Assistant">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="color:var(--accent-hover);"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+            <span>AI Assist</span>
+          </button>
+
+          <!-- Header Multi-Profile Switcher Dropdown Button -->
+          <div style="position:relative;">
+            <button id="header-profile-btn" class="header-profile-pill" onclick="ProfilesManager.toggleProfileSwitcherDropdown()" title="Switch Profile">
+              <div class="header-profile-avatar" id="header-profile-avatar-pill">J</div>
+              <span class="header-profile-name" id="header-profile-name-pill">Johan Wilhelm</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="header-profile-dropdown" class="profile-dropdown-menu">
+              <div class="profile-dropdown-header">Select Workspace Identity</div>
+              <div id="header-profile-dropdown-list" class="profile-dropdown-items-wrap"></div>
+            </div>
+          </div>
+
+          <button class="btn-icon notification-bell-btn" onclick="App.toggleNotificationCenter()" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notification-badge-dot active"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- In-App Notification Center Dropdown -->
+      <div id="notification-center-drawer" class="notification-center-drawer">
+        <div class="notif-header">
+          <div style="font-weight: 700; font-size: 13px;">Device & Cloud Alerts</div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" style="padding: 2px 8px; font-size: 11px;" onclick="NotificationManager.requestPermission()">Enable Push</button>
+            <button class="btn btn-secondary" style="padding: 2px 8px; font-size: 11px;" onclick="NotificationManager.markAllAsRead()">Clear</button>
+          </div>
+        </div>
+        <div id="notif-list-container" class="notif-list"></div>
+      </div>
+
+      <!-- Main Viewports -->
+      <main class="viewport-container">
+
+        <!-- ==================== VIEW 1: UNITY WORKSPACE ==================== -->
+        <section id="view-workspace" class="view-section active">
+          <div class="workspace-layout">
+            <!-- Document Page Hierarchy Tree -->
+            <div class="workspace-page-tree">
+              <div class="tree-header">
+                <span class="tree-title">Pages & Specs</span>
+                <button class="btn btn-primary" style="padding: 3px 8px; font-size: 11px; display:flex; align-items:center; gap:4px;" onclick="WorkspaceManager.createNewDoc()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Page</span>
+                </button>
+              </div>
+              <ul class="tree-list" id="workspace-doc-tree-list"></ul>
+            </div>
+
+            <!-- Unity Document Viewport -->
+            <div class="doc-viewport">
+              <input type="file" id="markdown-import-file-input" accept=".md" style="display:none;" onchange="WorkspaceManager.handleMarkdownFileImport(event)">
+
+              <div id="doc-cover-container" class="doc-cover-container">
+                <div class="doc-cover-pattern"></div>
+                <div class="doc-cover-controls">
+                  <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="WorkspaceManager.openCoverPicker()">🎨 Change Cover</button>
+                  <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="WorkspaceManager.changeDocIcon()">Change Icon</button>
+                  <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="WorkspaceManager.triggerMarkdownImport()">📥 Import .md</button>
+                  <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="WorkspaceManager.exportMarkdown()">Export Markdown</button>
+                </div>
+              </div>
+
+              <div class="doc-header-wrapper">
+                <button id="doc-icon-btn" class="doc-icon-picker" onclick="WorkspaceManager.changeDocIcon()" title="Change Document Vector Icon"></button>
+                <input type="text" id="doc-title-input" class="doc-title-input" placeholder="Untitled Document" oninput="WorkspaceManager.updateDocTitle(this.value)">
+                <div class="doc-metadata-bar">
+                  <div class="doc-meta-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/></svg>
+                    <span>Ionity Global</span>
+                  </div>
+                  <div class="doc-meta-chip">
+                    <span id="doc-meta-date">Updated Today</span>
+                  </div>
+                  <div class="doc-meta-chip" style="margin-left: auto;">
+                    <span class="pixel-badge" style="font-size: 8px;">Unity 2.0 Dynamic Blocks</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Blocks Editor -->
+              <div id="doc-editor-blocks" class="doc-editor-body"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 2: SIMPLE CRM ==================== -->
+        <section id="view-crm" class="view-section">
+          <div class="crm-container">
+            <!-- Telemetry Stats Grid (5 KPI Cards) -->
+            <div class="crm-stats-grid">
+              <div class="stat-card pipeline">
+                <div class="stat-header">
+                  <span class="stat-title">Total Pipeline</span>
+                  <span class="pixel-badge">USD</span>
+                </div>
+                <div class="stat-value" id="crm-stat-total-pipeline">$295,000</div>
+                <div class="stat-sub">Across 5 active stages</div>
+              </div>
+              <div class="stat-card" style="border-top-color: var(--accent-hover);">
+                <div class="stat-header">
+                  <span class="stat-title">Weighted Forecast</span>
+                  <span class="pixel-badge" style="color: var(--accent-hover); border-color: var(--accent-hover);">PROB</span>
+                </div>
+                <div class="stat-value" id="crm-stat-weighted-forecast" style="color: var(--accent-hover);">$182,400</div>
+                <div class="stat-sub">Expected revenue realization</div>
+              </div>
+              <div class="stat-card won">
+                <div class="stat-header">
+                  <span class="stat-title">Deals Closed Won</span>
+                  <span class="pixel-badge" style="color: var(--status-green); border-color: var(--status-green);">WON</span>
+                </div>
+                <div class="stat-value" id="crm-stat-won">$75,000</div>
+                <div class="stat-sub">100% conversion realized</div>
+              </div>
+              <div class="stat-card negotiation">
+                <div class="stat-header">
+                  <span class="stat-title">In Negotiation</span>
+                  <span class="pixel-badge">HOT</span>
+                </div>
+                <div class="stat-value" id="crm-stat-negotiation">$48,500</div>
+                <div class="stat-sub">80% probability weighting</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-title">Win Rate Ratio</span>
+                  <span class="pixel-badge">KPI</span>
+                </div>
+                <div class="stat-value" id="crm-stat-winrate">20%</div>
+                <div class="stat-sub">Global benchmark: 18%</div>
+              </div>
+            </div>
+
+            <!-- Revenue Forecast Telemetry Bar Chart -->
+            <div class="crm-forecast-card">
+              <div class="forecast-header">
+                <div>
+                  <span class="pixel-badge" style="font-size: 8px;">FINANCIAL INTELLIGENCE</span>
+                  <div style="font-weight: 700; font-size: 13px; margin-top: 4px;">Pipeline Volume vs Probability-Weighted Revenue by Stage</div>
+                </div>
+                <div style="display:flex; gap:14px; font-size:11px;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="display:inline-block; width:10px; height:10px; background:rgba(51,102,255,0.35); border-radius:2px;"></span>
+                    <span>Total Deal Volume</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="display:inline-block; width:10px; height:10px; background:var(--accent-primary); border-radius:2px;"></span>
+                    <span>Weighted Forecast</span>
+                  </div>
+                </div>
+              </div>
+              <div id="crm-forecast-chart-container"></div>
+            </div>
+
+            <!-- CRM View Controls & Search Bar -->
+            <div class="crm-controls-bar">
+              <div class="view-tabs">
+                <button id="crm-tab-pipeline" class="view-tab-btn active" onclick="CRMManager.switchView('pipeline')">Kanban Pipeline</button>
+                <button id="crm-tab-contacts" class="view-tab-btn" onclick="CRMManager.switchView('contacts')">Contacts & Leads Directory</button>
+              </div>
+
+              <!-- Deal Live Search Input -->
+              <div style="flex:1; max-width:280px; position:relative;">
+                <input type="text" class="form-input" style="width:100%; padding:6px 12px 6px 30px; font-size:12px;" placeholder="Search deals or clients..." oninput="CRMManager.filterDeals(this.value)">
+                <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--text-subtle);">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </span>
+              </div>
+
+              <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="CRMManager.exportCSV()">💾 Export CSV</button>
+                <button class="btn btn-secondary" onclick="App.openModal('modal-add-contact')">+ Add Contact</button>
+                <button class="btn btn-primary" onclick="App.openModal('modal-add-deal')">+ Add New Deal</button>
+              </div>
+            </div>
+
+            <!-- Pipeline Kanban Board (Finance & Revenue) -->
+            <div id="crm-pipeline-view-container" class="crm-pipeline-board" style="grid-template-columns: repeat(4, minmax(240px, 1fr));">
+              <!-- Stage 1: Check-in -->
+              <div class="crm-stage-column">
+                <div class="stage-header">
+                  <div class="stage-title-wrap">
+                    <span class="stage-dot lead" style="background:#3366FF;"></span>
+                    <span class="stage-title">Check-in</span>
+                    <span class="stage-count" id="crm-count-checkin">0</span>
+                  </div>
+                  <span class="stage-total" id="crm-total-checkin">$0</span>
+                </div>
+                <div id="crm-stage-checkin" class="stage-cards-list"></div>
+              </div>
+
+              <!-- Stage 2: Quoted -->
+              <div class="crm-stage-column">
+                <div class="stage-header">
+                  <div class="stage-title-wrap">
+                    <span class="stage-dot proposal" style="background:#FFA000;"></span>
+                    <span class="stage-title">Quoted</span>
+                    <span class="stage-count" id="crm-count-quoted">0</span>
+                  </div>
+                  <span class="stage-total" id="crm-total-quoted">$0</span>
+                </div>
+                <div id="crm-stage-quoted" class="stage-cards-list"></div>
+              </div>
+
+              <!-- Stage 3: Followed Up -->
+              <div class="crm-stage-column">
+                <div class="stage-header">
+                  <div class="stage-title-wrap">
+                    <span class="stage-dot negotiation" style="background:#A855F7;"></span>
+                    <span class="stage-title">Followed Up</span>
+                    <span class="stage-count" id="crm-count-followedup">0</span>
+                  </div>
+                  <span class="stage-total" id="crm-total-followedup">$0</span>
+                </div>
+                <div id="crm-stage-followedup" class="stage-cards-list"></div>
+              </div>
+
+              <!-- Stage 4: Paid -->
+              <div class="crm-stage-column">
+                <div class="stage-header">
+                  <div class="stage-title-wrap">
+                    <span class="stage-dot won" style="background:#00E676;"></span>
+                    <span class="stage-title">Paid / Won</span>
+                    <span class="stage-count" id="crm-count-paid">0</span>
+                  </div>
+                  <span class="stage-total" id="crm-total-paid">$0</span>
+                </div>
+                <div id="crm-stage-paid" class="stage-cards-list"></div>
+              </div>
+            </div>
+
+            <!-- Contacts Directory Table View -->
+            <div id="crm-contacts-view-container" class="crm-table-container" style="display: none;">
+              <div style="padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+                <input type="text" class="form-input" style="max-width:300px; padding:6px 12px; font-size:12px;" placeholder="Filter contacts by name or company..." oninput="CRMManager.filterContacts(this.value)">
+                <button class="btn btn-primary" style="padding: 6px 12px; font-size:12px;" onclick="App.openModal('modal-add-contact')">+ Add New Contact</button>
+              </div>
+              <table class="crm-table">
+                <thead>
+                  <tr>
+                    <th>Contact Name</th>
+                    <th>Company</th>
+                    <th>Email Address</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="crm-contacts-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 3: SCRUM SPRINT ==================== -->
+        <section id="view-scrum" class="view-section">
+          <div class="scrum-container">
+            <!-- Sprint Header Card -->
+            <div class="sprint-header-card">
+              <div class="sprint-info-left">
+                <div class="sprint-tag-row">
+                  <span class="pixel-badge">ACTIVE SPRINT</span>
+                  <span style="font-size: 11px; color: var(--text-muted);">Aug 15 - Aug 29, 2026</span>
+                </div>
+                <div class="sprint-title" id="scrum-sprint-title">Sprint 42: Global Scalability & OAuth 2.0</div>
+                <div class="sprint-goal-text" id="scrum-sprint-goal">Finalize PWA offline synchronization, Google OAuth 2.0 provider integration (@ionity.today domain lock), and GCP Compute Engine Always-Free VM.</div>
+              </div>
+
+              <div class="sprint-metrics-right">
+                <div class="sprint-metric-item">
+                  <span class="metric-label">Completed</span>
+                  <span class="metric-val" id="scrum-done-points">18 pts</span>
+                </div>
+                <div class="sprint-metric-item">
+                  <span class="metric-label">Total Scope</span>
+                  <span class="metric-val" id="scrum-total-points">33 pts</span>
+                </div>
+                <div class="sprint-metric-item">
+                  <span class="metric-label">Velocity</span>
+                  <span class="metric-val" id="scrum-velocity-rate">55%</span>
+                  <div class="sprint-progress-bar-wrap">
+                    <div id="scrum-sprint-progress-fill" class="sprint-progress-fill" style="width: 55%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Burndown Chart -->
+            <div id="scrum-burndown-chart-wrap"></div>
+
+            <!-- Scrum Controls & Epic Filters -->
+            <div class="scrum-toolbar">
+              <div class="scrum-filter-group">
+                <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Epics:</span>
+                <button class="btn btn-secondary scrum-epic-filter-btn active" data-epic="all" onclick="ScrumManager.filterByEpic('all')" style="padding:2px 8px; font-size:11px;">ALL</button>
+                <button class="btn btn-secondary scrum-epic-filter-btn" data-epic="auth" onclick="ScrumManager.filterByEpic('auth')" style="padding:2px 8px; font-size:11px;">AUTH</button>
+                <button class="btn btn-secondary scrum-epic-filter-btn" data-epic="pwa" onclick="ScrumManager.filterByEpic('pwa')" style="padding:2px 8px; font-size:11px;">PWA</button>
+                <button class="btn btn-secondary scrum-epic-filter-btn" data-epic="crm" onclick="ScrumManager.filterByEpic('crm')" style="padding:2px 8px; font-size:11px;">CRM</button>
+                <button class="btn btn-secondary scrum-epic-filter-btn" data-epic="gcp" onclick="ScrumManager.filterByEpic('gcp')" style="padding:2px 8px; font-size:11px;">GCP VM</button>
+              </div>
+
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-secondary" onclick="ScrumManager.openSprintSettings()" title="Configure sprint goals & velocity">⚙️ Sprint Config</button>
+                <button class="btn btn-secondary" style="color:var(--status-green); border-color:rgba(0,230,118,0.3);" onclick="ScrumManager.completeSprint()">🏆 Complete Sprint</button>
+                <button class="btn btn-primary" onclick="App.openModal('modal-add-task')">+ Add User Story</button>
+              </div>
+            </div>
+
+            <!-- Scrum Kanban Board -->
+            <div class="scrum-board">
+              <!-- To Do -->
+              <div class="scrum-column">
+                <div class="scrum-column-header">
+                  <div class="scrum-col-title-wrap">
+                    <span class="scrum-col-dot todo"></span>
+                    <span class="scrum-col-title">Sprint Backlog</span>
+                  </div>
+                  <span class="scrum-col-count" id="scrum-count-todo">0</span>
+                </div>
+                <div id="scrum-col-todo" class="scrum-cards-container"></div>
+              </div>
+
+              <!-- In Progress / Busy With -->
+              <div class="scrum-column">
+                <div class="scrum-column-header">
+                  <div class="scrum-col-title-wrap">
+                    <span class="scrum-col-dot progress"></span>
+                    <span class="scrum-col-title">⚡ Busy With</span>
+                  </div>
+                  <span class="scrum-col-count" id="scrum-count-progress">0</span>
+                </div>
+                <div id="scrum-col-progress" class="scrum-cards-container"></div>
+              </div>
+
+              <!-- Code Review & Testing -->
+              <div class="scrum-column">
+                <div class="scrum-column-header">
+                  <div class="scrum-col-title-wrap">
+                    <span class="scrum-col-dot review"></span>
+                    <span class="scrum-col-title">QA & Review</span>
+                  </div>
+                  <span class="scrum-col-count" id="scrum-count-review">0</span>
+                </div>
+                <div id="scrum-col-review" class="scrum-cards-container"></div>
+              </div>
+
+              <!-- Done / Completed -->
+              <div class="scrum-column">
+                <div class="scrum-column-header">
+                  <div class="scrum-col-title-wrap">
+                    <span class="scrum-col-dot done"></span>
+                    <span class="scrum-col-title">✅ Completed (3 Done)</span>
+                  </div>
+                  <span class="scrum-col-count" id="scrum-count-done">0</span>
+                </div>
+                <div id="scrum-col-done" class="scrum-cards-container"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 4: AUTH & GOOGLE OAUTH 2.0 ==================== -->
+        <section id="view-auth" class="view-section">
+          <div class="scrum-container">
+            <div class="stat-card" style="background: linear-gradient(135deg, #182030, #141720); border-color: rgba(51, 102, 255, 0.3);">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                <div>
+                  <span class="pixel-badge">ENTERPRISE AUTH 2.0</span>
+                  <h2 style="font-size: 22px; font-weight: 800; margin-top: 8px;">Google Identity & Global SSO Connectors</h2>
+                  <p style="color: var(--text-muted); font-size: 13px; max-width: 600px; margin-top: 4px;">
+                    Integrate your Google Cloud Console OAuth 2.0 Client ID for seamless team sign-in, along with GitHub, Microsoft 365, and Claude API providers.
+                  </p>
+                </div>
+                <button class="btn btn-primary" onclick="App.openModal('modal-google-auth')">⚙️ Setup Google OAuth 2.0 Credentials</button>
+              </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+              <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">Connected Providers Hub</h3>
+              <div id="provider-connections-list" class="provider-grid"></div>
+            </div>
+
+            <!-- Google Sign-In Container for Live Button rendering -->
+            <div style="margin-top: 20px; background: var(--bg-surface); padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+              <div>
+                <div style="font-weight: 700; font-size: 14px;">Google Sign-In Button (GSI SDK)</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Enter your Client ID to activate standard Google One-Tap or button popup.</div>
+              </div>
+              <div id="google-signin-btn-container">
+                <button class="btn btn-secondary" onclick="App.openModal('modal-google-auth')">Configure Client ID</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 5: GOOGLE CLOUD VM & FIREBASE HOSTING ==================== -->
+        <section id="view-gcp" class="view-section">
+          <div class="scrum-container">
+            <div class="stat-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div>
+                  <span class="pixel-badge">GCP ALWAYS FREE TIER + FIREBASE SPARK</span>
+                  <h2 style="font-size: 22px; font-weight: 800; margin-top: 8px;">Cloud VM & Firebase Hosting Control Center</h2>
+                  <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">
+                    Host Ionity Central on a <b>100% Always-Free Google Cloud VM</b> (<code>e2-micro</code> + 30GB storage) and deploy to <b>Firebase Web Hosting</b> (10GB free edge storage & automated SSL).
+                  </p>
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <button class="btn btn-primary" onclick="FirebaseManager.openHostingSettingsModal()">⚙️ Firebase Settings</button>
+                  <button class="btn btn-secondary" onclick="FirebaseManager.syncToCloudStorage()">📦 Sync Cloud Snapshot</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dual Deployment Cards -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:16px;">
+              <!-- Tier 1: Firebase Hosting -->
+              <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:18px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; position:relative; overflow:hidden;">
+                <div style="position:absolute; top:0; left:0; width:4px; height:100%; background:#FFA000;"></div>
+                <div>
+                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="#FFCA28" d="M3.89 15.67L6.46 2.31c.07-.37.52-.52.8-.27l3.6 3.25-6.97 10.38z"/><path fill="#FFA000" d="M14.52 7.74l-2.48-4.73a.47.47 0 0 0-.84 0L3.89 15.67l10.63-7.93z"/><path fill="#F57C00" d="M18.84 19.34l-1.92-11.83c-.06-.39-.55-.54-.83-.27l-8.78 8.44 6.77 3.82c.45.26 1 .26 1.45 0l3.31-1.87z"/><path fill="#FFCA28" d="M12.07 19.49l-4.76-2.69 4.76-9.06 4.76 9.06-4.76 2.69z"/></svg>
+                      <span style="font-weight:800; font-size:15px;">Firebase Web Hosting</span>
+                    </div>
+                    <span class="pixel-badge" style="font-size:8px; color:#FFA000; border-color:#FFA000;">SPARK FREE TIER</span>
+                  </div>
+                  <p style="color:var(--text-muted); font-size:12px; margin-top:8px; line-height:1.4;">
+                    Global high-speed CDN edge network with <b>10 GB free hosting storage</b>, custom domain SSL, and automatic Single Page Application routing.
+                  </p>
+                  <div style="background:var(--bg-surface-elevated); padding:10px; border-radius:var(--radius-md); font-size:11px; margin-top:10px; font-family:var(--font-mono); color:#9ece6a;">
+                    ✔ 10 GB Free Storage • 360 MB/day Transfer<br>
+                    ✔ Auto SSL: central.ionity.today<br>
+                    ✔ 1-Click CLI: firebase deploy --only hosting
+                  </div>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  <button class="btn btn-primary" style="font-size:11px; padding:6px 12px;" onclick="GCPHelper.runTerminalCommand('firebase deploy')">⚡ Deploy to Firebase</button>
+                  <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="FirebaseManager.openLiveApp()">🌐 Open .web.app</button>
+                  <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="FirebaseManager.testConnection()">📡 Test Endpoint</button>
+                </div>
+              </div>
+
+              <!-- Tier 2: GCP Always-Free VM -->
+              <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:18px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; position:relative; overflow:hidden;">
+                <div style="position:absolute; top:0; left:0; width:4px; height:100%; background:var(--accent-primary);"></div>
+                <div>
+                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                      <span style="font-weight:800; font-size:15px;">Google Cloud Always-Free VM</span>
+                    </div>
+                    <span class="pixel-badge" style="font-size:8px; color:var(--status-green); border-color:var(--status-green);">COMPUTE ENGINE</span>
+                  </div>
+                  <p style="color:var(--text-muted); font-size:12px; margin-top:8px; line-height:1.4;">
+                    Dedicated <b>e2-micro VM instance</b> in <code>us-central1</code> with <b>30 GB Standard Disk</b> and <b>5 GB Cloud Storage Bucket</b> (100% Free Quota).
+                  </p>
+                  <div style="background:var(--bg-surface-elevated); padding:10px; border-radius:var(--radius-md); font-size:11px; margin-top:10px; font-family:var(--font-mono); color:#73daca;">
+                    ✔ 1x e2-micro (2 vCPU, 1GB RAM + 2GB Swap)<br>
+                    ✔ 30 GB Standard Disk (/dev/sda1)<br>
+                    ✔ Nginx reverse proxy + Certbot SSL Watchdog
+                  </div>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  <button class="btn btn-primary" style="font-size:11px; padding:6px 12px;" onclick="GCPHelper.openGoogleCloudWebSSH()">🚀 1-Click Web SSH</button>
+                  <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="GCPHelper.copySSHCommand('gcloud')">💻 Copy gcloud SSH</button>
+                  <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="GCPHelper.copySSHCommand('direct')">🔑 Direct SSH</button>
+                  <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="GCPHelper.copyPowerShellScript()">⚡ PowerShell Script</button>
+                  <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="GCPHelper.copyScript()">📋 Bash Script</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Simulated Cloud Terminal -->
+            <div class="terminal-window">
+              <div class="terminal-titlebar">
+                <div class="terminal-dots">
+                  <div class="terminal-dot" style="background:#ff5f56;"></div>
+                  <div class="terminal-dot" style="background:#ffbd2e;"></div>
+                  <div class="terminal-dot" style="background:#27c93f;"></div>
+                </div>
+                <span style="font-size:11px; font-family:var(--font-mono); color:var(--text-muted);">root@ionity-central-vm (Ubuntu 24.04 LTS • us-central1-a • Always Free Tier)</span>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <button class="btn btn-primary" style="padding:2px 8px; font-size:9px; height:20px;" onclick="GCPHelper.openGoogleCloudWebSSH()">🚀 Launch Web SSH</button>
+                  <span class="pixel-badge" style="font-size:8px; color:var(--status-green); border-color:var(--status-green);">SSH READY</span>
+                </div>
+              </div>
+              <div id="gcp-terminal-output" class="terminal-body" style="min-height:180px;"></div>
+              <div class="terminal-quick-cmds">
+                <span style="font-size:11px; font-weight:700; color:var(--text-muted);">Cloud Terminal Actions:</span>
+                <button class="btn btn-secondary" style="padding:2px 8px; font-size:10px; color:#FFA000;" onclick="GCPHelper.runTerminalCommand('firebase deploy')">🔥 firebase deploy</button>
+                <button class="btn btn-secondary" style="padding:2px 8px; font-size:10px; color:var(--accent-primary);" onclick="GCPHelper.runTerminalCommand('gcloud compute instances list')">☁️ gcloud instances</button>
+                <button class="btn btn-secondary" style="padding:2px 8px; font-size:10px;" onclick="GCPHelper.runTerminalCommand('df -h')">💾 Storage (30GB)</button>
+                <button class="btn btn-secondary" style="padding:2px 8px; font-size:10px;" onclick="GCPHelper.runTerminalCommand('free -h')">🧠 Memory + Swap</button>
+                <button class="btn btn-secondary" style="padding:2px 8px; font-size:10px;" onclick="GCPHelper.runTerminalCommand('systemctl status nginx')">systemctl status</button>
+                <button class="btn btn-secondary" style="padding:2px 8px; font-size:10px;" onclick="GCPHelper.runTerminalCommand('certbot certificates')">check ssl</button>
+                <button class="btn btn-secondary" style="padding:2px 8px; font-size:10px; color:var(--status-yellow);" onclick="GCPHelper.runTerminalCommand('restart')">🔄 Restart Nginx</button>
+              </div>
+            </div>
+
+            <!-- Scripts Code Previews -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:16px;">
+              <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 18px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <span style="font-weight: 700; font-size: 13px;">1-Click PowerShell Provisioner (<code>deploy-gcp-vm.ps1</code>)</span>
+                  <button class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="GCPHelper.copyPowerShellScript()">📋 Copy PS1</button>
+                </div>
+                <pre id="gcp-ps-script-preview" style="background: #101010; padding: 12px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 11px; color: #73daca; overflow-x: auto; max-height: 240px; border: 1px solid #282828;"></pre>
+              </div>
+
+              <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 18px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <span style="font-weight: 700; font-size: 13px;">Automated VM Bootstrap Script (<code>deploy-gcp.sh</code>)</span>
+                  <button class="btn btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="GCPHelper.copyScript()">📋 Copy Bash</button>
+                </div>
+                <pre id="gcp-script-preview" style="background: #101010; padding: 12px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 11px; color: #73daca; overflow-x: auto; max-height: 240px; border: 1px solid #282828;"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== VIEW 6: SCREEN RECORDER STUDIO ==================== -->
+        <section id="view-recorder" class="view-section">
+          <div id="recorder-studio-container" class="scrum-container"></div>
+        </section>
+
+        <!-- ==================== VIEW 7: LOGO WATERMARK STUDIO ==================== -->
+        <section id="view-watermark" class="view-section">
+          <div id="watermark-studio-viewport" class="scrum-container"></div>
+        </section>
+
+        <!-- ==================== VIEW 8: PROFILES & IDENTITY HUB ==================== -->
+        <section id="view-profiles" class="view-section">
+          <div id="profiles-hub-container" class="scrum-container"></div>
+        </section>
+
+        <!-- ==================== VIEW 9: SETTINGS & BACKUP ==================== -->
+        <section id="view-settings" class="view-section">
+          <div class="scrum-container" style="max-width: 800px;">
+            <div class="stat-card">
+              <h2 style="font-size: 20px; font-weight: 800;">Workspace Preferences</h2>
+              <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Brand & Organization Name</label>
+                  <input type="text" class="form-input" value="Ionity Global / Antwerp Designs" readonly>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Primary Author & Solutionist</label>
+                  <input type="text" class="form-input" value="Johan Wilhelm van Antwerp" readonly>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Theme Mode</label>
+                  <select class="form-select">
+                    <option value="dark-8bit" selected>Ionity Dark 8-Bit (#1A1A1A + #3366FF)</option>
+                  </select>
+                </div>
+
+                <!-- Compact Cloud, Auth & Finance Status Segment -->
+                <div style="background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:16px; margin-top:8px; display:flex; flex-direction:column; gap:12px;">
+                  <div style="font-weight:700; font-size:13px; color:var(--text-main); display:flex; justify-content:space-between; align-items:center;">
+                    <span>⚡ Cloud, Auth & Finance Engine Status</span>
+                    <span class="pixel-badge" style="font-size:7px; color:var(--status-green); border-color:var(--status-green);">ALL SYSTEMS 100% FREE</span>
+                  </div>
+                  
+                  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:10px; font-size:11px;">
+                    <div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                      <div style="color:var(--text-muted);">Google OAuth 2.0</div>
+                      <div style="font-weight:700; color:#00E676; margin-top:2px;">🔒 @ionity.today Only</div>
+                    </div>
+                    <div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                      <div style="color:var(--text-muted);">Firebase Hosting</div>
+                      <div style="font-weight:700; color:#FFA000; margin-top:2px;">🌐 10GB Edge Active</div>
+                    </div>
+                    <div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                      <div style="color:var(--text-muted);">Gemini Cache AUC</div>
+                      <div style="font-weight:700; color:#3366FF; margin-top:2px;">⚡ 0ms / 0 Token Reuse</div>
+                    </div>
+                    <div style="background:var(--bg-surface); padding:10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                      <div style="color:var(--text-muted);">Finance Pipeline</div>
+                      <div style="font-weight:700; color:#A855F7; margin-top:2px;">💰 Check-in ➔ Paid</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 12px;">
+                  <button class="btn btn-primary" onclick="App.downloadBackup()">📦 Download Full Workspace JSON Backup</button>
+                  <button class="btn btn-secondary" onclick="NotificationManager.play8BitChime('success')">🔊 Test 8-Bit Chime</button>
+                  <button class="btn btn-secondary" style="color:var(--status-red); border-color:rgba(255,61,113,0.3);" onclick="AuthManager.logout()">🚪 Sign Out</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==================== POPUP SLASH COMMAND MENU ==================== -->
+  <div id="slash-command-menu" class="slash-command-menu">
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('text')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="4" y1="17" x2="12" y2="17"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Text Paragraph</span>
+        <span class="slash-item-desc">Plain text paragraph</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('h1')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 12h8"/><path d="M4 18V6"/><path d="M12 18V6"/><path d="M17 12l3-2v8"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Heading 1</span>
+        <span class="slash-item-desc">Large section title</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('h2')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 12h8"/><path d="M4 18V6"/><path d="M12 18V6"/><path d="M21 18h-4c0-4 4-3 4-6 0-1.5-2-2.5-4-1"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Heading 2</span>
+        <span class="slash-item-desc">Medium section title</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('todo')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">To-do Checklist</span>
+        <span class="slash-item-desc">Interactive task checkbox</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('timer')">
+      <div class="slash-item-icon">⏱️</div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">8-Bit Focus Sprint Timer</span>
+        <span class="slash-item-desc">25m Pomodoro sprint countdown</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('soundboard')">
+      <div class="slash-item-icon">🔊</div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">8-Bit Audio Soundboard</span>
+        <span class="slash-item-desc">Interactive retro sound fx chips</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('table')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M12 3v18"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Structured Dynamic Table</span>
+        <span class="slash-item-desc">Editable grid with row/col controls</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('callout')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Callout Box</span>
+        <span class="slash-item-desc">Highlighted notice box</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('code')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Code Runner</span>
+        <span class="slash-item-desc">Syntax highlighted code with preview</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('quote')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c-.5 4-2 6-4 6z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c-.5 4-2 6-4 6z"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Quote</span>
+        <span class="slash-item-desc">Blockquote callout</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="WorkspaceManager.selectSlashType('video')">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Screen Recording / Video Block</span>
+        <span class="slash-item-desc">Embed recorded walkthrough with logo watermark</span>
+      </div>
+    </div>
+    <div class="slash-item" onclick="App.switchView('watermark'); WorkspaceManager.hideSlashMenu();">
+      <div class="slash-item-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/><polygon points="12 8 9 13 12 13 11 17 15 11 12 11 12 8" fill="#3366FF" stroke="#3366FF" stroke-width="1"/></svg>
+      </div>
+      <div class="slash-item-text">
+        <span class="slash-item-title">Logo Watermark Studio</span>
+        <span class="slash-item-desc">Upload or configure logo stamp overlay</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== COMMAND PALETTE MODAL (Ctrl+K) ==================== -->
+  <div id="modal-command-palette" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-command-palette')">
+    <div class="modal-card command-palette-card">
+      <div class="command-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="command-palette-input" class="command-input" placeholder="Type a command or search workspace..." oninput="App.filterCommands(this.value)">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <div id="command-results-list" class="command-results-list"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD CRM DEAL ==================== -->
+  <div id="modal-add-deal" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-add-deal')">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <span class="modal-title">Create New CRM Deal</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-add-deal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Deal Title</label>
+          <input type="text" id="new-deal-title" class="form-input" placeholder="e.g., Cloud Modernization & AI Setup">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company / Client Name</label>
+          <input type="text" id="new-deal-company" class="form-input" placeholder="e.g., Apex International">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Value (USD $)</label>
+            <input type="number" id="new-deal-value" class="form-input" placeholder="50000" value="35000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Initial Stage</label>
+            <select id="new-deal-stage" class="form-select">
+              <option value="lead">New Lead</option>
+              <option value="contacted" selected>Contacted</option>
+              <option value="proposal">Proposal</option>
+              <option value="negotiation">Negotiation</option>
+              <option value="won">Closed Won</option>
+            </select>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Primary Contact</label>
+            <input type="text" id="new-deal-contact" class="form-input" placeholder="e.g., Sarah Jenkins">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Email</label>
+            <input type="email" id="new-deal-email" class="form-input" placeholder="sarah@apex.com">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-add-deal')">Cancel</button>
+        <button class="btn btn-primary" onclick="
+          const title = document.getElementById('new-deal-title').value;
+          const company = document.getElementById('new-deal-company').value;
+          const val = document.getElementById('new-deal-value').value;
+          const stage = document.getElementById('new-deal-stage').value;
+          const contact = document.getElementById('new-deal-contact').value;
+          const email = document.getElementById('new-deal-email').value;
+          CRMManager.addNewDeal(title, company, val, stage, contact, email, 50);
+          App.closeModal('modal-add-deal');
+        ">Save Deal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: CRM DEAL INSPECTOR & EDITOR ==================== -->
+  <div id="modal-deal-inspector" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-deal-inspector')">
+    <div class="modal-card" style="max-width: 620px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span style="font-size: 18px;">💼</span>
+          <span class="modal-title">Deal Inspector & Financial Forecast</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-deal-inspector')">✕</button>
+      </div>
+      <div class="modal-body" id="modal-deal-inspector-body">
+        <input type="hidden" id="insp-deal-id">
+        <div class="form-group">
+          <label class="form-label">Deal Title</label>
+          <input type="text" id="insp-deal-title" class="form-input" placeholder="Deal title">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company / Client Organization</label>
+          <input type="text" id="insp-deal-company" class="form-input" placeholder="Company name">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Contract Value (USD $)</label>
+            <input type="number" id="insp-deal-value" class="form-input" oninput="CRMManager.updateProbSlider(document.getElementById('insp-deal-probability').value)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pipeline Stage</label>
+            <select id="insp-deal-stage" class="form-select">
+              <option value="lead">New Lead</option>
+              <option value="contacted">Contacted</option>
+              <option value="proposal">Proposal</option>
+              <option value="negotiation">Negotiation</option>
+              <option value="won">Closed Won</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="background: var(--bg-surface-elevated); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+            <label class="form-label" style="margin:0;">Probability Weighting</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span id="insp-prob-val" style="font-size:12px; font-weight:800; color:var(--accent-hover); font-family:var(--font-mono);">50%</span>
+              <span id="insp-weighted-calc" style="font-size:11px; color:var(--status-green); font-family:var(--font-mono);">Forecast: $0</span>
+            </div>
+          </div>
+          <input type="range" id="insp-deal-probability" class="form-range" min="0" max="100" step="5" value="50" oninput="CRMManager.updateProbSlider(this.value)" style="width:100%;">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Primary Contact</label>
+            <input type="text" id="insp-deal-contact" class="form-input" placeholder="Contact name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Email</label>
+            <input type="email" id="insp-deal-email" class="form-input" placeholder="email@company.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deal Notes & Timeline</label>
+          <textarea id="insp-deal-notes" class="form-input" rows="2" placeholder="Key decision makers, requirements, next steps..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary" style="color:var(--status-red); border-color:rgba(255,61,113,0.3);" onclick="CRMManager.deleteActiveDeal()">🗑️ Delete</button>
+          <button class="btn btn-secondary" onclick="CRMManager.duplicateActiveDeal()">📋 Duplicate</button>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary" onclick="App.closeModal('modal-deal-inspector')">Cancel</button>
+          <button class="btn btn-primary" onclick="CRMManager.saveDealInspector()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD CLIENT CONTACT ==================== -->
+  <div id="modal-add-contact" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-add-contact')">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span style="font-size: 18px;">👥</span>
+          <span class="modal-title">Add Client Directory Contact</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-add-contact')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="new-contact-name" class="form-input" placeholder="e.g., Alex Vance">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company / Client Organization</label>
+          <input type="text" id="new-contact-company" class="form-input" placeholder="e.g., Black Mesa Corp">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="new-contact-email" class="form-input" placeholder="alex@blackmesa.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" id="new-contact-phone" class="form-input" placeholder="+27 82 000 0000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Relationship Status</label>
+          <select id="new-contact-status" class="form-select">
+            <option value="Active Client" selected>Active Client</option>
+            <option value="Prospect">Prospect</option>
+            <option value="Partner">Strategic Partner</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-add-contact')">Cancel</button>
+        <button class="btn btn-primary" onclick="
+          const name = document.getElementById('new-contact-name').value;
+          const company = document.getElementById('new-contact-company').value;
+          const email = document.getElementById('new-contact-email').value;
+          const phone = document.getElementById('new-contact-phone').value;
+          const status = document.getElementById('new-contact-status').value;
+          CRMManager.addNewContact(name, company, email, phone, status);
+          App.closeModal('modal-add-contact');
+        ">Save Contact</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD SCRUM TASK ==================== -->
+  <div id="modal-add-task" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-add-task')">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" width="20" height="20"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span class="modal-title">Create Scrum Story / Task</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-add-task')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">User Story / Task Title</label>
+          <input type="text" id="new-task-title" class="form-input" placeholder="e.g., Integrate Service Worker Push Notification payload">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Story Points (Fibonacci)</label>
+            <select id="new-task-points" class="form-select">
+              <option value="1">1 pt</option>
+              <option value="2">2 pts</option>
+              <option value="3" selected>3 pts</option>
+              <option value="5">5 pts</option>
+              <option value="8">8 pts</option>
+              <option value="13">13 pts</option>
+              <option value="21">21 pts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Priority</label>
+            <select id="new-task-priority" class="form-select">
+              <option value="urgent">Urgent</option>
+              <option value="high" selected>High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Epic</label>
+            <select id="new-task-epic" class="form-select">
+              <option value="auth">AUTH</option>
+              <option value="pwa" selected>PWA</option>
+              <option value="crm">CRM</option>
+              <option value="gcp">GCP VM</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assignee</label>
+          <input type="text" id="new-task-assignee" class="form-input" value="Johan Wilhelm van Antwerp">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-add-task')">Cancel</button>
+        <button class="btn btn-primary" onclick="
+          const title = document.getElementById('new-task-title').value;
+          const pts = document.getElementById('new-task-points').value;
+          const prio = document.getElementById('new-task-priority').value;
+          const epic = document.getElementById('new-task-epic').value;
+          const assignee = document.getElementById('new-task-assignee').value;
+          ScrumManager.addNewTask(title, 'todo', pts, prio, epic, assignee);
+          App.closeModal('modal-add-task');
+        ">Add to Backlog</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: SCRUM STORY INSPECTOR ==================== -->
+  <div id="modal-task-inspector" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-task-inspector')">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span style="font-size: 18px;">📋</span>
+          <span class="modal-title">Scrum Story & Acceptance Inspector</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-task-inspector')">✕</button>
+      </div>
+      <div class="modal-body" id="modal-task-inspector-body">
+        <input type="hidden" id="insp-task-id">
+        <div class="form-group">
+          <label class="form-label">Story / Task Title</label>
+          <input type="text" id="insp-task-title" class="form-input" placeholder="Story title">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Acceptance Criteria & Description</label>
+          <textarea id="insp-task-desc" class="form-input" rows="3" placeholder="Given... When... Then..."></textarea>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Fibonacci Points</label>
+            <select id="insp-task-points" class="form-select">
+              <option value="1">1 pt</option>
+              <option value="2">2 pts</option>
+              <option value="3">3 pts</option>
+              <option value="5">5 pts</option>
+              <option value="8">8 pts</option>
+              <option value="13">13 pts</option>
+              <option value="21">21 pts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Priority</label>
+            <select id="insp-task-priority" class="form-select">
+              <option value="urgent">Urgent</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Epic</label>
+            <select id="insp-task-epic" class="form-select">
+              <option value="auth">AUTH</option>
+              <option value="pwa">PWA</option>
+              <option value="crm">CRM</option>
+              <option value="gcp">GCP VM</option>
+            </select>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Assignee</label>
+            <input type="text" id="insp-task-assignee" class="form-input" placeholder="Assignee name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Current Column / Stage</label>
+            <select id="insp-task-stage" class="form-select">
+              <option value="todo">Sprint Backlog (To Do)</option>
+              <option value="progress">In Progress</option>
+              <option value="review">QA & Review</option>
+              <option value="done">Done & Verified</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn btn-secondary" style="color:var(--status-red); border-color:rgba(255,61,113,0.3);" onclick="
+          if (ScrumManager.activeTaskId) ScrumManager.deleteTask(ScrumManager.activeTaskId);
+          App.closeModal('modal-task-inspector');
+        ">🗑️ Delete Story</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary" onclick="App.closeModal('modal-task-inspector')">Cancel</button>
+          <button class="btn btn-primary" onclick="ScrumManager.saveTaskInspector()">Save Story</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: SPRINT CONFIGURATION ==================== -->
+  <div id="modal-sprint-settings" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-sprint-settings')">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span style="font-size: 18px;">⚙️</span>
+          <span class="modal-title">Sprint Cycle Configuration</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-sprint-settings')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Sprint Name / Iteration Title</label>
+          <input type="text" id="cfg-sprint-title" class="form-input" value="Sprint 42: Global Scalability & OAuth 2.0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sprint Goal</label>
+          <textarea id="cfg-sprint-goal" class="form-input" rows="3">Finalize PWA offline synchronization, Google OAuth 2.0 provider integration, and GCP Compute Engine VM deployment template.</textarea>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Sprint Start Date</label>
+            <input type="date" id="cfg-sprint-start" class="form-input" value="2026-08-15">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sprint End Date</label>
+            <input type="date" id="cfg-sprint-end" class="form-input" value="2026-08-29">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-sprint-settings')">Cancel</button>
+        <button class="btn btn-primary" onclick="ScrumManager.saveSprintSettings()">Update Sprint</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: COVER PICKER GALLERY ==================== -->
+  <div id="modal-cover-picker" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-cover-picker')">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span style="font-size: 18px;">🎨</span>
+          <span class="modal-title">Document Banner & Cover Palette</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-cover-picker')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-label" style="margin-bottom: 8px;">Select Cyber Aesthetic Gradient:</div>
+        <div class="cover-gallery-grid">
+          <div class="cover-card-option" style="background: linear-gradient(135deg, #101a2e 0%, #1e3a8a 100%);" onclick="WorkspaceManager.applyCoverGradient('linear-gradient(135deg, #101a2e 0%, #1e3a8a 100%)')">Electric Blue</div>
+          <div class="cover-card-option" style="background: linear-gradient(135deg, #2a0845 0%, #6441a5 100%);" onclick="WorkspaceManager.applyCoverGradient('linear-gradient(135deg, #2a0845 0%, #6441a5 100%)')">Neon Purple</div>
+          <div class="cover-card-option" style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);" onclick="WorkspaceManager.applyCoverGradient('linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)')">Cyber Cyan</div>
+          <div class="cover-card-option" style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);" onclick="WorkspaceManager.applyCoverGradient('linear-gradient(135deg, #134e5e 0%, #71b280 100%)')">Emerald Matrix</div>
+          <div class="cover-card-option" style="background: linear-gradient(135deg, #300000 0%, #800020 100%);" onclick="WorkspaceManager.applyCoverGradient('linear-gradient(135deg, #300000 0%, #800020 100%)')">Crimson Glow</div>
+          <div class="cover-card-option" style="background: linear-gradient(135deg, #1f1c2c 0%, #928dab 100%);" onclick="WorkspaceManager.applyCoverGradient('linear-gradient(135deg, #1f1c2c 0%, #928dab 100%)')">Titanium Steel</div>
+          <div class="cover-card-option" style="background: linear-gradient(135deg, #232526 0%, #414345 100%);" onclick="WorkspaceManager.applyCoverGradient('linear-gradient(135deg, #232526 0%, #414345 100%)')">Ionity Dark Onyx</div>
+          <div class="cover-card-option" style="background: linear-gradient(135deg, #4b1248 0%, #f0c27b 100%);" onclick="WorkspaceManager.applyCoverGradient('linear-gradient(135deg, #4b1248 0%, #f0c27b 100%)')">Sunset Flare</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-cover-picker')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: AI ASSISTANT PROMPT SELECTOR ==================== -->
+  <div id="modal-ai-assist" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-ai-assist')">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" width="20" height="20"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+          <span class="modal-title">Gemini AI & Cache AUC Workspace Assistant</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-ai-assist')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:rgba(51,102,255,0.08); border-left:3px solid var(--accent-primary); padding:10px 12px; border-radius:var(--radius-sm); font-size:12px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <b>Google Gemini 1.5 Flash (Free Tier)</b>
+            <div style="color:var(--text-muted); font-size:11px;">15 RPM • 1M TPM • Zero Cost • Cache AUC Active</div>
+          </div>
+          <button class="btn btn-secondary" style="font-size:11px; padding:4px 8px;" onclick="GeminiService.openConfigModal()">⚙️ Key & Cache Settings</button>
+        </div>
+
+        <!-- Custom Prompt Input -->
+        <div class="form-group">
+          <label class="form-label">Custom AI Instruction / Prompt</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="ai-custom-prompt-input" class="form-input" placeholder="e.g., Draft an executive summary for this document...">
+            <button class="btn btn-primary" style="white-space:nowrap;" onclick="
+              const val = document.getElementById('ai-custom-prompt-input').value;
+              if (val) WorkspaceManager.executeAiPrompt('custom', val);
+            ">⚡ Generate</button>
+          </div>
+        </div>
+
+        <div class="form-label" style="margin-top:14px; margin-bottom:8px;">Quick AI Templates:</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="slash-item" style="border: 1px solid var(--border-subtle);" onclick="WorkspaceManager.executeAiPrompt('finance')">
+            <div class="slash-item-icon">💰</div>
+            <div class="slash-item-text">
+              <span class="slash-item-title">Deal & Financial Proposal Generator</span>
+              <span class="slash-item-desc">Generates quote milestones (Check-in ➔ Paid) & ROI breakdown</span>
+            </div>
+          </div>
+          <div class="slash-item" style="border: 1px solid var(--border-subtle);" onclick="WorkspaceManager.executeAiPrompt('debrief')">
+            <div class="slash-item-icon">📋</div>
+            <div class="slash-item-text">
+              <span class="slash-item-title">Meeting Debrief & Action Item Extractor</span>
+              <span class="slash-item-desc">Extracts structured SCRUM sprint tasks and assignee deliverables</span>
+            </div>
+          </div>
+          <div class="slash-item" style="border: 1px solid var(--border-subtle);" onclick="WorkspaceManager.executeAiPrompt('architecture')">
+            <div class="slash-item-icon">🏛️</div>
+            <div class="slash-item-text">
+              <span class="slash-item-title">Enterprise Cloud Architecture Spec</span>
+              <span class="slash-item-desc">Generates GCP Always-Free VM, Nginx, and Firebase topology</span>
+            </div>
+          </div>
+          <div class="slash-item" style="border: 1px solid var(--border-subtle);" onclick="WorkspaceManager.executeAiPrompt('scrum')">
+            <div class="slash-item-icon">⚡</div>
+            <div class="slash-item-text">
+              <span class="slash-item-title">Agile Sprint User Stories (Gherkin format)</span>
+              <span class="slash-item-desc">Given / When / Then criteria for engineering sprints</span>
+            </div>
+          </div>
+          <div class="slash-item" style="border: 1px solid var(--border-subtle);" onclick="WorkspaceManager.executeAiPrompt('table')">
+            <div class="slash-item-icon">📊</div>
+            <div class="slash-item-text">
+              <span class="slash-item-title">SaaS Cost & SLA Comparison Table</span>
+              <span class="slash-item-desc">Inserts dynamic pricing & free tier analysis table</span>
+            </div>
+          </div>
+          <div class="slash-item" style="border: 1px solid var(--border-subtle);" onclick="WorkspaceManager.executeAiPrompt('pomodoro')">
+            <div class="slash-item-icon">⏱️</div>
+            <div class="slash-item-text">
+              <span class="slash-item-title">Deep Work Focus Block & 8-Bit Timer</span>
+              <span class="slash-item-desc">Inserts a 25-minute sprint timer and task checklist</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <span class="pixel-badge" style="font-size:8px; color:var(--status-green); border-color:var(--status-green);">⚡ CACHE AUC ACTIVE</span>
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-ai-assist')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ==================== FLOATING SCREEN RECORDER HUD ==================== -->
+  <div id="screen-recorder-hud" class="screen-recorder-hud-bar" style="display:none;">
+    <div class="rec-hud-beacon-wrap">
+      <span class="rec-hud-pulse-beacon"></span>
+      <span class="font-8bit" style="font-size:10px; color:#FF3D71;">REC</span>
+    </div>
+    <div id="rec-hud-timer" class="rec-hud-timer-digits font-8bit">00:00:00</div>
+    <span class="pixel-badge" style="font-size:7px; padding:2px 4px; color:var(--status-green); border-color:var(--status-green);">WATERMARK ON</span>
+    <div class="rec-hud-btns">
+      <button id="rec-hud-pause-btn" class="btn btn-secondary rec-hud-btn" onclick="ScreenRecorderManager.pauseRecording()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+        <span>Pause</span>
+      </button>
+      <button class="btn btn-danger rec-hud-btn" onclick="ScreenRecorderManager.stopRecording()">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="14" height="14"><rect x="5" y="5" width="14" height="14" rx="2" fill="#FF3D71"/></svg>
+        <span>Stop & Save</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: SCREEN RECORDER CONFIG ==================== -->
+  <div id="modal-screen-recorder" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-screen-recorder')">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--status-red)" stroke-width="2" width="22" height="22"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="10" r="3" fill="#FF3D71" stroke="#FF3D71"/></svg>
+          <span class="modal-title">Screen Recorder Studio & Options</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-screen-recorder')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12.5px; color:var(--text-muted);">
+          Capture high-framerate video of your entire screen, application window, or browser tab with real-time logo watermarking and audio mixing.
+        </p>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Capture Resolution</label>
+            <select id="rec-opt-resolution" class="form-select">
+              <option value="1080p" selected>1080p Full HD (Recommended)</option>
+              <option value="720p">720p HD (Compact)</option>
+              <option value="4k">4K Ultra HD (High Bitrate)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Target Framerate</label>
+            <select id="rec-opt-fps" class="form-select">
+              <option value="60" selected>60 FPS (Ultra Smooth)</option>
+              <option value="30">30 FPS (Standard)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface-elevated); padding:14px; border-radius:var(--radius-md); border:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-weight:700; font-size:13px;">Include Microphone Audio</div>
+              <div style="font-size:11px; color:var(--text-muted);">Mixes condenser mic with system sound</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="rec-opt-mic" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-subtle); padding-top:10px;">
+            <div>
+              <div style="font-weight:700; font-size:13px;">Webcam Presenter PIP Bubble</div>
+              <div style="font-size:11px; color:var(--text-muted);">Composites live camera in corner with Ionity border</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="rec-opt-webcam">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-subtle); padding-top:10px;">
+            <div>
+              <div style="font-weight:700; font-size:13px;">Live Logo Watermark Overlay</div>
+              <div style="font-size:11px; color:var(--text-muted);">Embeds active brand mark & Antwerp Designs stamp</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="rec-opt-watermark" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-screen-recorder')">Cancel</button>
+        <button class="btn btn-record-quick" style="padding:8px 16px;" onclick="ScreenRecorderManager.startRecordingFromUI()">
+          <span class="record-pulse-dot"></span>
+          <span>Start Screen Recording</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: RECORDING PREVIEW & EMBED ==================== -->
+  <div id="modal-recording-preview" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-recording-preview')">
+    <div class="modal-card" style="max-width: 720px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--status-green)" stroke-width="2" width="22" height="22"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+          <span class="modal-title" id="rec-preview-title">Screen Recording Preview</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-recording-preview')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="preview-video-container">
+          <video id="rec-preview-video-player" controls playsinline class="preview-video-element"></video>
+        </div>
+        <div id="rec-preview-meta" class="preview-meta-row"></div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary" onclick="ScreenRecorderManager.downloadActiveRecording('webm')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download .WebM</span>
+          </button>
+          <button class="btn btn-secondary" onclick="ScreenRecorderManager.downloadActiveRecording('mp4')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download .MP4</span>
+          </button>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary" onclick="App.closeModal('modal-recording-preview')">Close</button>
+          <button class="btn btn-primary" onclick="ScreenRecorderManager.embedRecordingInActiveDoc()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>Embed in Active Unity Doc</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: MANAGE & EDIT PROFILES ==================== -->
+  <div id="modal-manage-profiles" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-manage-profiles')">
+    <div class="modal-card" style="max-width: 620px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+          <span class="modal-title" id="modal-profile-title">Workspace Profile Configuration</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-manage-profiles')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="prof-input-name" class="form-input" placeholder="e.g. Johan Wilhelm van Antwerp">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role / Job Title</label>
+            <input type="text" id="prof-input-role" class="form-input" placeholder="e.g. Lead Solutionist">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Organization / Brand</label>
+            <input type="text" id="prof-input-org" class="form-input" placeholder="e.g. Ionity Global & Antwerp Designs">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="prof-input-email" class="form-input" placeholder="e.g. johan@ionity.co.za">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Bio / Profile Description</label>
+          <textarea id="prof-input-bio" class="form-input" rows="2" placeholder="Brief role summary or portfolio link..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Portfolio / Web URL</label>
+          <input type="text" id="prof-input-website" class="form-input" placeholder="https://www.ionity.today">
+        </div>
+
+        <!-- Avatar Selection & Upload -->
+        <div class="form-group" style="background:var(--bg-surface-elevated); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-subtle);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label class="form-label" style="margin:0;">Profile Avatar Picture</label>
+            <input type="file" id="prof-avatar-file-input" accept="image/*" style="display:none;" onchange="ProfilesManager.handleAvatarUpload(this.files[0], (data) => ProfilesManager.setStagedAvatarPreset(data))">
+            <button class="btn btn-secondary" style="padding:2px 8px; font-size:11px;" onclick="document.getElementById('prof-avatar-file-input').click()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Upload Custom Avatar</span>
+            </button>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="avatar-staged-preview">
+              <img id="prof-avatar-preview-img" src="assets/johan-avatar.jpg" alt="Avatar Preview" onerror="this.src='assets/ionity-logo.png'">
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-secondary" style="padding:3px 6px; font-size:10px;" onclick="ProfilesManager.setStagedAvatarPreset('assets/johan-avatar.jpg')">Johan Avatar</button>
+              <button class="btn btn-secondary" style="padding:3px 6px; font-size:10px;" onclick="ProfilesManager.setStagedAvatarPreset('assets/ionity-logo.png')">Ionity Logo</button>
+              <button class="btn btn-secondary" style="padding:3px 6px; font-size:10px;" onclick="ProfilesManager.setStagedAvatarPreset('assets/AEDi-AntwerpDesigns-Ionityglobal.png')">AEDi Emblem</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Digital Signature Selection & Upload -->
+        <div class="form-group" style="background:var(--bg-surface-elevated); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-subtle);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label class="form-label" style="margin:0;">Executive Digital Signature</label>
+            <input type="file" id="prof-signature-file-input" accept="image/*" style="display:none;" onchange="ProfilesManager.handleSignatureUpload(this.files[0], (data) => ProfilesManager.setStagedSignaturePreset(data))">
+            <button class="btn btn-secondary" style="padding:2px 8px; font-size:11px;" onclick="document.getElementById('prof-signature-file-input').click()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Upload Custom Signature</span>
+            </button>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="signature-staged-preview">
+              <img id="prof-signature-preview-img" src="assets/Johanwilhelmvanantwerpesignatureionity.png" alt="Signature Preview" onerror="this.src='assets/AEDi-AntwerpDesigns-Ionityglobal.png'">
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-secondary" style="padding:3px 6px; font-size:10px;" onclick="ProfilesManager.setStagedSignaturePreset('assets/Johanwilhelmvanantwerpesignatureionity.png')">Johan Signature</button>
+              <button class="btn btn-secondary" style="padding:3px 6px; font-size:10px;" onclick="ProfilesManager.setStagedSignaturePreset('assets/AEDi-AntwerpDesigns-Ionityglobal.png')">AEDi Stamp</button>
+              <button class="btn btn-secondary" style="padding:3px 6px; font-size:10px;" onclick="ProfilesManager.setStagedSignaturePreset('assets/aedi.svg')">AEDi Vector</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-manage-profiles')">Cancel</button>
+        <button class="btn btn-primary" onclick="ProfilesManager.saveProfileFromModal()">Save Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: USER & EXECUTIVE PROFILE SHOWCASE ==================== -->
+  <div id="modal-user-profile" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-user-profile')">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="modal-title">Executive Identity & Brand Profile</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-user-profile')">✕</button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:16px;">
+        <div style="display:flex; align-items:center; gap:16px; background:var(--bg-surface-elevated); padding:14px; border-radius:var(--radius-lg); border:1px solid var(--border-subtle);">
+          <div style="width:54px; height:54px; border-radius:50%; background:var(--accent-primary); display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:800; color:#FFF; overflow:hidden;">
+            <img src="assets/johan-avatar.jpg" alt="Johan" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.textContent='J'">
+          </div>
+          <div>
+            <div style="font-size:16px; font-weight:800; color:var(--text-main);">Johan Wilhelm van Antwerp</div>
+            <div style="font-size:12px; color:var(--accent-hover); font-weight:600;">Lead Solutionist • Antwerp Designs</div>
+            <div style="font-size:11px; color:var(--text-muted);">johan@ionity.co.za • www.ionity.today</div>
+          </div>
+        </div>
+
+        <div class="signature-card-box">
+          <div style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Executive Digital Signature & Brand Stamp</div>
+          <img src="assets/Johanwilhelmvanantwerpesignatureionity.png" alt="Executive Signature" class="signature-img" onerror="this.style.display='none'">
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px; font-size:12px; color:var(--text-muted);">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">
+            <span>Primary Brand:</span> <b style="color:var(--text-main);">Ionity Global (Pty) Ltd</b>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">
+            <span>Design Studio:</span> <b style="color:var(--text-main);">Antwerp Designs</b>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">
+            <span>Aesthetic:</span> <b style="color:var(--text-main);">8-Bit Retro Accents + Modern Structured Layouts</b>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span>Live Portfolio:</span> <a href="https://www.ionity.today" target="_blank" style="color:var(--accent-hover); text-decoration:none; font-weight:700;">www.ionity.today ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-user-profile')">Close</button>
+        <button class="btn btn-primary" onclick="App.closeModal('modal-user-profile'); App.switchView('profiles');">Manage Profiles</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: GOOGLE OAUTH 2.0 CONFIG ==================== -->
+  <div id="modal-google-auth" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-google-auth')">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+          <span class="modal-title">Google Identity & OAuth 2.0 Credentials</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-google-auth')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(51, 102, 255, 0.08); border-left: 3px solid var(--accent-primary); padding: 12px; border-radius: var(--radius-sm); font-size: 12.5px; line-height: 1.5;">
+          <b>How to configure Google OAuth 2.0:</b>
+          <ol style="margin-left: 20px; margin-top: 6px;">
+            <li>Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color: var(--accent-hover);">Google Cloud Console > Credentials</a>.</li>
+            <li>Create an <b>OAuth 2.0 Client ID</b> (Application type: <i>Web application</i>).</li>
+            <li>Add your authorized JavaScript origins (e.g. <code>http://localhost:8080</code>, <code>https://central.ionity.today</code>).</li>
+            <li>Paste your <b>Client ID</b> below and save.</li>
+          </ol>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Google OAuth 2.0 Client ID</label>
+          <input type="text" id="cfg-google-client-id" class="form-input" placeholder="e.g., 1234567890-abcdefg.apps.googleusercontent.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Google Client Secret (Optional for Server API)</label>
+          <input type="password" id="cfg-google-client-secret" class="form-input" placeholder="GOCSPX-xxxxxxxxxxxx">
+        </div>
+
+        <div style="background:var(--bg-surface-elevated); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+          <div>
+            <div style="font-weight:700; font-size:12px;">Auth Later / Staging Sandbox Mode</div>
+            <div style="font-size:11px; color:var(--text-muted);">Use Google Cloud Architect profile until live Client ID is saved</div>
+          </div>
+          <button class="btn btn-secondary" style="font-size:11px; padding:4px 8px;" onclick="AuthManager.loginWithGoogle(); App.closeModal('modal-google-auth');">
+            ⚡ Quick Authenticate
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-google-auth')">Cancel</button>
+        <button class="btn btn-primary" onclick="
+          const cid = document.getElementById('cfg-google-client-id').value;
+          const sec = document.getElementById('cfg-google-client-secret').value;
+          AuthManager.saveGoogleConfig(cid, sec);
+          App.closeModal('modal-google-auth');
+        ">Save Credentials</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: FIREBASE HOSTING & STORAGE CONFIG ==================== -->
+  <div id="modal-firebase-hosting" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-firebase-hosting')">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#FFCA28" d="M3.89 15.67L6.46 2.31c.07-.37.52-.52.8-.27l3.6 3.25-6.97 10.38z"/><path fill="#FFA000" d="M14.52 7.74l-2.48-4.73a.47.47 0 0 0-.84 0L3.89 15.67l10.63-7.93z"/><path fill="#F57C00" d="M18.84 19.34l-1.92-11.83c-.06-.39-.55-.54-.83-.27l-8.78 8.44 6.77 3.82c.45.26 1 .26 1.45 0l3.31-1.87z"/><path fill="#FFCA28" d="M12.07 19.49l-4.76-2.69 4.76-9.06 4.76 9.06-4.76 2.69z"/></svg>
+          <span class="modal-title">Firebase Hosting & Cloud Storage Hub</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-firebase-hosting')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(255, 202, 40, 0.08); border-left: 3px solid #FFCA28; padding: 12px; border-radius: var(--radius-sm); font-size: 12.5px; line-height: 1.5;">
+          <b>Firebase Spark Plan (100% Free Tier):</b>
+          <div style="margin-top: 4px; color: var(--text-muted);">
+            • 10 GB Free Storage & 360 MB/day data transfer.<br>
+            • Free automated SSL on custom domain (<code>central.ionity.today</code> / <code>central.ionity.co.za</code>).<br>
+            • Worldwide fast CDN caching & Single Page App fallback routing.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Firebase Project ID</label>
+          <input type="text" id="fb-cfg-project-id" class="form-input" placeholder="e.g., ionity-central">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Web API Key (Optional)</label>
+            <input type="password" id="fb-cfg-api-key" class="form-input" placeholder="AIzaSy...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Auth Domain</label>
+            <input type="text" id="fb-cfg-auth-domain" class="form-input" placeholder="ionity-central.firebaseapp.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cloud Storage Bucket Name</label>
+          <input type="text" id="fb-cfg-storage-bucket" class="form-input" placeholder="ionity-central.appspot.com">
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn btn-secondary" onclick="FirebaseManager.copyCommand('firebase')">📋 Copy CLI Command</button>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" onclick="App.closeModal('modal-firebase-hosting')">Cancel</button>
+          <button class="btn btn-primary" onclick="FirebaseManager.saveModalConfig()">Save Configuration</button>
+        </div>
+      </div>
+    </div>
+  <!-- ==================== MODAL: GEMINI AI & CACHE AUC CONFIG ==================== -->
+  <div id="modal-gemini-config" class="modal-overlay" onclick="if(event.target===this) App.closeModal('modal-gemini-config')">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+          <span class="modal-title">Google Gemini Free-Tier & Cache AUC Settings</span>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-gemini-config')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(51, 102, 255, 0.08); border-left: 3px solid var(--accent-primary); padding: 12px; border-radius: var(--radius-sm); font-size: 12.5px; line-height: 1.5;">
+          <b>Google AI Studio Free Tier (100% Free - No Card Required):</b>
+          <div style="margin-top: 4px; color: var(--text-muted);">
+            • Get your free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent-hover);">aistudio.google.com/app/apikey</a><br>
+            • Free Quota: <b>15 RPM, 1,000,000 TPM, 1,500 RPD</b>.<br>
+            • <b>Cache AUC</b> caches query vectors and contexts in IndexedDB / LocalStorage, serving duplicate queries in 0ms with zero token cost.
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:12px;">
+          <label class="form-label">Google Gemini API Key (Free Tier)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="password" id="gemini-cfg-api-key" class="form-input" placeholder="AIzaSy...">
+            <button class="btn btn-secondary" style="white-space:nowrap;" onclick="GeminiService.testApiKey()">⚡ Test Key</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Model Selection</label>
+            <select id="gemini-cfg-model" class="form-select">
+              <option value="local-tiny-ai">⚡ Local Tiny AI (In-Cache / Nano - 100% Offline)</option>
+              <option value="gemini-1.5-flash" selected>Gemini 1.5 Flash (Fast & Free Tier)</option>
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash (Next-Gen Free Tier)</option>
+              <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep Reasoning)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cache AUC Engine</label>
+            <div style="background:var(--bg-surface-elevated); padding:10px; border-radius:var(--radius-md); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; font-weight:700;">Active Universal Cache</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="gemini-cfg-cache-auc" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Local RAG Semantic Cache & Free VM Backup -->
+        <div style="background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px; margin-top:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span class="pixel-badge" style="font-size:7px; color:var(--status-green); border-color:var(--status-green);">LOCAL RAG CACHE</span>
+              <span style="font-weight:700; font-size:12px;">On-Device Knowledge Index</span>
+            </div>
+            <button class="btn btn-secondary" style="font-size:10px; padding:3px 8px;" onclick="LocalRAGService.reindexWorkspace(); NotificationManager.showToast('RAG knowledge index re-indexed!', 'success');">🔄 Re-index</button>
+          </div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">
+            Embeds Unity docs, CRM finance stages (Check-in ➔ Paid), and Scrum backlog into local semantic chunks for deep AI collaboration.
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid var(--border-subtle);">
+            <span style="font-size:11px; color:var(--text-muted);">Backup target: <code style="color:#73daca;">ionity-central-vm (Always Free)</code></span>
+            <button class="btn btn-primary" style="font-size:11px; padding:4px 10px;" onclick="LocalRAGService.backupRAGToCloudVM()">☁️ Backup RAG to Free VM</button>
+          </div>
+        </div>
+
+        <!-- Cache AUC Metrics -->
+        <div style="background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:12px; margin-top:8px; display:flex; justify-content:space-around; text-align:center;">
+          <div>
+            <div id="gemini-stat-hits" style="font-weight:800; font-size:18px; color:var(--status-green);">0</div>
+            <div style="font-size:10px; color:var(--text-muted);">Cache AUC Hits</div>
+          </div>
+          <div style="border-left:1px solid var(--border-subtle); padding-left:16px;">
+            <div id="gemini-stat-tokens" style="font-weight:800; font-size:18px; color:var(--accent-primary);">0 tokens</div>
+            <div style="font-size:10px; color:var(--text-muted);">Tokens Saved (0ms)</div>
+          </div>
+          <div style="border-left:1px solid var(--border-subtle); padding-left:16px;">
+            <button class="btn btn-secondary" style="font-size:10px; padding:4px 8px; margin-top:4px;" onclick="GeminiService.clearCacheAuc()">🗑️ Clear Cache</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeModal('modal-gemini-config')">Cancel</button>
+        <button class="btn btn-primary" onclick="GeminiService.saveModalConfig()">Save Configuration</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/icons.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/watermark.js"></script>
+  <script src="js/profiles.js"></script>
+  <script src="js/recorder.js"></script>
+  <script src="js/screenshare.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/local-rag.js"></script>
+  <script src="js/gemini-service.js"></script>
+  <script src="js/workspace.js"></script>
+  <script src="js/crm.js"></script>
+  <script src="js/scrum.js"></script>
+  <script src="js/firebase-manager.js"></script>
+  <script src="js/gcp-helper.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
+
+

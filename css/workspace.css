@@ -1,0 +1,654 @@
+/* ==========================================================================
+   IONITY CENTRAL - WORKSPACE & NOTION-LIKE BLOCK EDITOR
+   ========================================================================== */
+
+.workspace-layout {
+  display: flex;
+  gap: 24px;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Page Sub-navigation / Tree in Workspace */
+.workspace-page-tree {
+  width: 240px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  height: fit-content;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.tree-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.tree-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tree-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tree-item:hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-main);
+}
+
+.tree-item.active {
+  background: var(--accent-subtle);
+  color: var(--text-main);
+  font-weight: 600;
+  border: 1px solid rgba(51, 102, 255, 0.3);
+}
+
+.tree-item-icon {
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tree-item-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tree-item-actions {
+  display: none;
+  gap: 4px;
+}
+
+.tree-item:hover .tree-item-actions {
+  display: flex;
+}
+
+.tree-item-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 3px;
+}
+
+.tree-item-btn:hover {
+  color: var(--status-red);
+}
+
+/* Notion Document Viewport */
+.doc-viewport {
+  flex: 1;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Document Top Banner / Cover */
+.doc-cover-container {
+  height: 140px;
+  background: linear-gradient(135deg, #1f2a44 0%, #0d1322 100%);
+  position: relative;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: height 0.2s;
+  overflow: hidden;
+}
+
+.doc-cover-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(51, 102, 255, 0.2) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.6;
+}
+
+.doc-cover-controls {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.doc-cover-container:hover .doc-cover-controls {
+  opacity: 1;
+}
+
+/* Document Header (Icon + Title + Meta) */
+.doc-header-wrapper {
+  padding: 0 40px;
+  position: relative;
+  margin-top: -36px;
+}
+
+.doc-icon-picker {
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s, border-color 0.2s;
+  user-select: none;
+  color: var(--accent-primary);
+}
+
+.doc-icon-picker:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-accent);
+}
+
+.doc-title-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-main);
+  padding: 16px 0 8px;
+  font-family: var(--font-sans);
+  letter-spacing: -0.5px;
+}
+
+.doc-title-input::placeholder {
+  color: var(--text-subtle);
+}
+
+.doc-metadata-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.doc-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background: var(--bg-surface-elevated);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Document Block Editor Container */
+.doc-editor-body {
+  flex: 1;
+  padding: 24px 40px 100px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Individual Notion Blocks */
+.notion-block {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+}
+
+.notion-block:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.block-handle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  cursor: grab;
+  color: var(--text-subtle);
+  padding: 4px 0;
+  user-select: none;
+  transition: opacity 0.15s;
+}
+
+.notion-block:hover .block-handle {
+  opacity: 1;
+}
+
+.block-handle-btn {
+  background: none;
+  border: none;
+  color: var(--text-subtle);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.block-handle-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-surface-elevated);
+}
+
+.block-content-area {
+  flex: 1;
+  min-width: 0;
+  outline: none;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--text-main);
+  word-break: break-word;
+}
+
+/* Block Types Styling */
+.block-text {
+  min-height: 24px;
+}
+
+.block-h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-top: 12px;
+  letter-spacing: -0.3px;
+}
+
+.block-h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 8px;
+}
+
+.block-h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-top: 6px;
+}
+
+.block-todo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.todo-checkbox {
+  appearance: none;
+  width: 17px;
+  height: 17px;
+  border: 2px solid var(--accent-primary);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.todo-checkbox:checked {
+  background: var(--accent-primary);
+}
+
+.todo-checkbox:checked::after {
+  content: '✔';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  font-size: 11px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.todo-text.checked {
+  text-decoration: line-through;
+  color: var(--text-subtle);
+}
+
+.block-quote {
+  border-left: 3px solid var(--accent-primary);
+  padding-left: 14px;
+  color: #DDD;
+  font-style: italic;
+}
+
+.block-callout {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.callout-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* Code Snippet Block */
+.block-code {
+  background: #111111;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-family: var(--font-mono);
+}
+
+.code-header {
+  background: var(--bg-surface-elevated);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.code-lang-select {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-family: var(--font-mono);
+}
+
+.code-content-editor {
+  padding: 14px 16px;
+  color: #73daca;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.code-output-console {
+  background: #080808;
+  border-top: 1px solid #222222;
+  padding: 10px 14px;
+}
+
+.code-output-title {
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--font-8bit);
+  color: var(--status-green);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.code-output-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #A0A0A0;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Dynamic Structured Table Block */
+.block-table-wrapper {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.block-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  text-align: left;
+}
+
+.block-table th, .block-table td {
+  padding: 8px 12px;
+  border: 1px solid var(--border-subtle);
+}
+
+.block-table th {
+  background: var(--bg-primary);
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.block-table td {
+  background: var(--bg-surface);
+  color: var(--text-muted);
+}
+
+.block-table td:focus, .block-table th:focus {
+  outline: none;
+  background: var(--accent-subtle);
+  color: var(--text-main);
+}
+
+.table-del-row-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-subtle);
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 3px;
+}
+
+.table-del-row-btn:hover {
+  color: var(--status-red);
+  background: rgba(255, 61, 113, 0.1);
+}
+
+/* 8-Bit Focus Sprint Timer Block */
+.block-focus-timer {
+  background: linear-gradient(135deg, #182030 0%, #10141e 100%);
+  border: 1px solid rgba(51, 102, 255, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.timer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timer-display-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.timer-digits {
+  font-size: 28px;
+  color: var(--accent-primary);
+  text-shadow: 0 0 12px rgba(51, 102, 255, 0.5);
+  letter-spacing: 2px;
+}
+
+.timer-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 8-Bit Synthesizer Soundboard Block */
+.block-soundboard {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.soundboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.soundboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.sound-chip-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sound-chip-btn:hover {
+  background: var(--accent-subtle);
+  border-color: var(--accent-primary);
+  color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.sound-chip-btn:active {
+  transform: translateY(1px);
+}
+
+
+/* Slash Command & Add Block Popover */
+.slash-command-menu {
+  position: absolute;
+  width: 280px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-lg);
+  padding: 6px;
+  z-index: 200;
+  display: none;
+}
+
+.slash-command-menu.active {
+  display: block;
+}
+
+.slash-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+
+.slash-item:hover, .slash-item.selected {
+  background: var(--accent-subtle);
+  color: var(--accent-hover);
+}
+
+.slash-item-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.slash-item-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.slash-item-title {
+  font-weight: 600;
+}
+
+.slash-item-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+}
