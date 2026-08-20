@@ -120,5 +120,6 @@ echo "========================================================"
 echo "✅ Ionity Central is successfully deployed and running!"
 if [ -n "$HOST_IP" ]; then
     echo "🌐 Access your app at: http://${HOST_IP}"
+    echo "🌐 Custom Domains: https://ionity.digital | https://central.ionity.today"
 fi
 echo "========================================================"

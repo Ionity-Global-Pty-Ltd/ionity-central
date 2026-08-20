@@ -176,8 +176,8 @@ class AuthManager {
       const profile = JSON.parse(jsonPayload);
       const email = (profile.email || '').toLowerCase().trim();
 
-      // ==================== DOMAIN RESTRICTION: @ionity.today ====================
-      const allowedDomains = ['@ionity.today', '@ionity.co.za'];
+      // ==================== DOMAIN RESTRICTION: @ionity.today & @ionity.digital ====================
+      const allowedDomains = ['@ionity.today', '@ionity.co.za', '@ionity.digital'];
       const isAllowed = allowedDomains.some(d => email.endsWith(d));
 
       if (!isAllowed) {

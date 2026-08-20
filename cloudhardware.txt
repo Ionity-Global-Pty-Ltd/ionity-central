@@ -28,9 +28,11 @@ under Google Cloud Platform Free Tier, Firebase Spark Plan, and Google AI Studio
 • Data Transfer: 360 MB / day (~10 GB / month worldwide)
 • Edge Network: Google Cloud Global Anycast CDN
 • SSL Certificates: Automated Let's Encrypt SSL for custom domains
-  - Target 1: https://central.ionity.today
-  - Target 2: https://central.ionity.co.za
-  - Primary: https://ionity-central.web.app
+  - Target 1: https://ionity.digital
+  - Target 2: https://central.ionity.digital
+  - Target 3: https://central.ionity.today
+  - Target 4: https://central.ionity.co.za
+  - Primary: https://ionity-root-system.web.app
 • Single Page Application: Automatic SPA fallback routing to /index.html
 • Cost: $0.00 / month (Indefinite Free Quota)
 
