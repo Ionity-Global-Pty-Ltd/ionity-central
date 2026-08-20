@@ -36,6 +36,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/auth-screen.css">
   <link rel="stylesheet" href="css/screenshare.css">
+  <link rel="stylesheet" href="css/ocr-inspector.css">
 </head>
 <body>
 
@@ -141,7 +142,10 @@
               <div style="font-size: 10px; color: var(--text-muted);">ionity.co.za / today</div>
             </div>
           </div>
-          <span style="font-size: 11px; color: var(--text-subtle);">Ctrl+K</span>
+          <div id="tab-sync-indicator" style="display:flex; align-items:center; gap:5px; background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.3); padding:2px 6px; border-radius:10px;" title="Real-time Tab & Keypoint Synchronization">
+            <span style="width:5px; height:5px; border-radius:50%; background:var(--status-green);"></span>
+            <span id="tab-sync-count" style="font-size:9px; color:var(--status-green); font-weight:700;">1 tab</span>
+          </div>
         </div>
       </div>
 
@@ -153,6 +157,13 @@
           </span>
           <span>Unity Workspace</span>
           <span class="nav-item-count" id="nav-docs-count">2</span>
+        </a>
+        <a class="nav-item" onclick="OcrInspector.triggerScreenOcr()" style="cursor:pointer;" title="Paddle OCR On-Screen Vision Inspector & AI Reporter">
+          <span class="nav-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/><path d="M12 9v1m0 6v1m-4-4h1m6 0h1" stroke="#00E676"/></svg>
+          </span>
+          <span>Paddle OCR AI</span>
+          <span class="nav-item-count" style="color:var(--status-green); border-color:rgba(0,230,118,0.3);">VISION</span>
         </a>
         <a class="nav-item" onclick="ScreenshareManager.snapToDefaultLeftCorner(); ScreenshareManager.toggleScreenshare();" style="cursor:pointer;" title="P2P Screenshare & Moveable Camera">
           <span class="nav-item-icon">
@@ -1986,6 +1997,8 @@
   <script src="js/scrum.js"></script>
   <script src="js/firebase-manager.js"></script>
   <script src="js/gcp-helper.js"></script>
+  <script src="js/tab-sync.js"></script>
+  <script src="js/ocr-inspector.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

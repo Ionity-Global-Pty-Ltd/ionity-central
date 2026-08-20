@@ -23,6 +23,8 @@ class App {
     WorkspaceManager.init();
     CRMManager.init();
     ScrumManager.init();
+    TabSyncManager.init();
+    OcrInspector.init();
 
     this.bindEvents();
     this.setupPWA();
